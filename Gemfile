@@ -14,12 +14,12 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
+gem 'omniauth'
+gem 'omniauth-facebook', '~> 1.4.0'
+
 # Cross Origin Resource Sharing
 gem 'rack-cors'
 gem 'redcarpet'
-# DSL for requiring SSL
-gem 'ssl_requirement',
-    :git => 'git://github.com/commondream/ssl_requirement.git'
 
 # NewRelic monitoring and reporting
 gem 'newrelic_rpm'
