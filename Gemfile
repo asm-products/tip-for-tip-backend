@@ -14,8 +14,10 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
+gem 'devise'
 gem 'omniauth'
-gem 'omniauth-facebook', '~> 1.4.0'
+gem 'omniauth-facebook'
+gem 'omniauth-twitter'
 
 # Cross Origin Resource Sharing
 gem 'rack-cors'
