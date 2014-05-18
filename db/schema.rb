@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140517063512) do
+ActiveRecord::Schema.define(version: 20140518032523) do
 
   create_table "identities", force: true do |t|
     t.integer  "user_id"
@@ -23,6 +23,41 @@ ActiveRecord::Schema.define(version: 20140517063512) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "nouns_persons", force: true do |t|
+    t.string   "uuid",       null: false
+    t.string   "name",       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "nouns_persons", ["name"], name: "index_nouns_persons_on_name", using: :btree
+  add_index "nouns_persons", ["uuid"], name: "index_nouns_persons_on_uuid", using: :btree
+
+  create_table "nouns_places", force: true do |t|
+    t.string   "uuid",            null: false
+    t.string   "name",            null: false
+    t.float    "latitude"
+    t.float    "longitude"
+    t.text     "foursquare_data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "nouns_places", ["latitude"], name: "index_nouns_places_on_latitude", using: :btree
+  add_index "nouns_places", ["longitude"], name: "index_nouns_places_on_longitude", using: :btree
+  add_index "nouns_places", ["name"], name: "index_nouns_places_on_name", using: :btree
+  add_index "nouns_places", ["uuid"], name: "index_nouns_places_on_uuid", using: :btree
+
+  create_table "nouns_things", force: true do |t|
+    t.string   "uuid",       null: false
+    t.string   "name",       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "nouns_things", ["name"], name: "index_nouns_things_on_name", using: :btree
+  add_index "nouns_things", ["uuid"], name: "index_nouns_things_on_uuid", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "uuid",                             null: false

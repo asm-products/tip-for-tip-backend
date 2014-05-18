@@ -1,5 +1,3 @@
-# require 'secure_random'
-
 module Uuid
   extend ActiveSupport::Concern
 
@@ -8,6 +6,9 @@ module Uuid
     before_validation do
       generate_uuid
     end
+
+    validates_uniqueness_of :uuid
+    validates_presence_of   :uuid
 
   end
 
