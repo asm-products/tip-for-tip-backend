@@ -1,0 +1,438 @@
+FORMAT: 1A
+HOST: https://api.tipfortip.com
+
+# Tip for Tip API
+
+Services all the data necessary for T4T client applicatinos.
+
+- All requests that require a current user will return `401` if no user is [authenticated](#authentication).
+
+
+
+# Group Authentication
+Use Facebook as a user authentication/creation portal.
+
+## GET /auth/facebook
+Authenticate via Facebook. Starts the handshake process for the client with Facebook Oauth.
+In the end, a user is redirected back to `/profile` unless a `redirectTo` param is provided.
+
+- If the user does not yet have an account, one is created for them.
+- If the user has an account but is not yet authenticated, they are logged in and their profile data is synced with their Facebook data.
+- If the user has an account and is already authenticated, their profile data is synced with their Facebook data.
+- If the user has an account by email but has not yet used this provider for authentication, TODO
+- If a `redirectTo` param is provided, successful authentication redirects to this url.
+
++ Response 304
+
+
+## GET /auth/logout
+Logout. Clears the user's session and auth tokens.
+
++ Response 200
+
+
+
+
+# Group Users
+User related resources.
+
+## GET /profile
+Retrieve the current user's user and profile data.
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                id: 1,
+                username: "1762fe11-ce3c-11e3-88f1-012052b12982",
+                firstName: "Amos",
+                lastName: null,
+                email: "amoslanka@gmail.com",
+                uuid: "1762fe10-ce3c-11e3-88f1-012052b12982",
+                timezone: -7,
+                locale: "en_US",
+                updatedAt: "2014-04-27T18:45:23.000Z",
+            }
+
++ Response 401 (application/json)
+
+    + Body
+
+            {
+                "status":"unauthorized"
+            }
+
+
+
+
+# Group Tips
+
+## POST /:nounType/:nounId?/tips
+
+- Requires a current user
+
+Create a tip for a noun. If a noun id is provided, the noun will be looked up, but otherwise one will be created. The current user will be assigned as the tipper. If the noun has not yet had a tip, the user will be set as the first tipper.
+
+Examples:
+
+- `POST places/tips` - Creates a place and a tip based on the provided params.
+- `POST places/123-abc/tips` - Finds the place with the id `123-abc` and creates a tip based on the provided params.
+- `POST things/tips` - Creates a thing and a tip based on the provided params.
+
++ Parameters
+
+    + nounType (string)               ... The type of noun the created tip will be created for. May be one of the available noun types.
+    + nounId   (optional, string)     ... The id of the noun to create the tip for. This parameter is optional. If left out, the other provided noun attributes will be used to find or create the noun.
+    + isAnonymous (optional, boolean) ... If true, the tip will be displayed without revealing the identity of the tipper. Default: false
+    + canPurchaseWithReputation (optional, boolean) ... If true, the readers of the tip can purchase it using reputation points. Default: false
+
++ Response 201 (application/json)
+
+    + Body
+
+            {
+                "id": "1163ef90-cddf-11e3-9f6d-85ee8d939f6f",
+                "nounId": "012052b12982-1762fe10-ce3c-11e3-88f1"
+            }
+
++ Response 401 (application/json)
+
+        If there is no currently authenticated user.
+
++ Response 404 (application/json)
+
+        If a noun id was provided but was not found.
+
+## GET /tips?q=<search>
+
+Search for tips based on the search query.
+
+- Returns tips in order of reputation
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                TODO
+            }
+
+# Group Foursquare
+
+Provides a proxy for the Foursquare API, attaching the appropriate api keys
+as authorization. Responses will also provide a subset of headers returned by
+the Foursquare API.
+
+- `x-ratelimit-limit`
+- `x-ratelimit-remaining`
+
+## GET /foursquare/v2/venues/search?{?ll}
+
+**Applies to all `/foursquare/` API calls.**
+
+Direct pipe into foursquare thru our API. We add client_id and client_secret on our end, so omit those. Otherwise, reference https://developer.foursquare.com/docs/venues/search.html
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "meta" : {
+                    "code" : 200
+                },
+                "response" : {
+                    "venues" : [
+                        {
+                            "id" : "4e5866bfa809655861178a30",
+                            "name" : "Gymmy",
+                            "contact" : {
+
+                            },
+                            "location" : {
+                                "lat" : 45.42039738797339,
+                                "lng" : -122.72638020026119,
+                                "distance" : 17,
+                                "cc" : "US",
+                                "state" : "Oregon",
+                                "country" : "United States"
+                            },
+                            "categories" : [
+                                {
+                                    "id" : "4bf58dd8d48988d175941735",
+                                    "name" : "Gym \/ Fitness Center",
+                                    "pluralName" : "Gyms or Fitness Centers",
+                                    "shortName" : "Gym \/ Fitness",
+                                    "icon" : {
+                                        "prefix" : "https:\/\/ss1.4sqi.net\/img\/categories_v2\/building\/gym_",
+                                        "suffix" : ".png"
+                                    },
+                                    "primary" : true
+                                }
+                            ],
+                            "verified" : false,
+                            "stats" : {
+                                "checkinsCount" : 3,
+                                "usersCount" : 1,
+                                "tipCount" : 0
+                            },
+                            "specials" : {
+                                "count" : 0,
+                                "items" : [
+
+                                ]
+                            },
+                            "hereNow" : {
+                                "count" : 0,
+                                "summary" : "0 people here",
+                                "groups" : [
+
+                                ]
+                            },
+                            "referralId" : "v-1398957965"
+                        },
+                        {
+                            "id" : "50c8ebdde4b04b42c3d7dd5b",
+                            "name" : "Kruse Woods III",
+                            "contact" : {
+
+                            },
+                            "location" : {
+                                "address" : "5005 Meadows Rd",
+                                "lat" : 45.41789010827635,
+                                "lng" : -122.72907308404407,
+                                "distance" : 350,
+                                "postalCode" : "97035",
+                                "cc" : "US",
+                                "city" : "Lake Oswego",
+                                "state" : "OR",
+                                "country" : "United States"
+                            },
+                            "categories" : [
+                                {
+                                    "id" : "4bf58dd8d48988d130941735",
+                                    "name" : "Building",
+                                    "pluralName" : "Buildings",
+                                    "shortName" : "Building",
+                                    "icon" : {
+                                        "prefix" : "https:\/\/ss1.4sqi.net\/img\/categories_v2\/building\/default_",
+                                        "suffix" : ".png"
+                                    },
+                                    "primary" : true
+                                }
+                            ],
+                            "verified" : false,
+                            "stats" : {
+                                "checkinsCount" : 181,
+                                "usersCount" : 10,
+                                "tipCount" : 0
+                            },
+                            "specials" : {
+                                "count" : 0,
+                                "items" : [
+
+                                ]
+                            },
+                            "hereNow" : {
+                                "count" : 0,
+                                "summary" : "0 people here",
+                                "groups" : [
+
+                                ]
+                            },
+                            "referralId" : "v-1398957965"
+                        },
+                        {
+                            "id" : "4c06df62cf8c76b0e5303b65",
+                            "name" : "Kruse Way Commons",
+                            "contact" : {
+
+                            },
+                            "location" : {
+                                "address" : "4933 Parkview Dr",
+                                "lat" : 45.42068389699463,
+                                "lng" : -122.72565128976458,
+                                "distance" : 73,
+                                "postalCode" : "97035",
+                                "cc" : "US",
+                                "city" : "Lake Oswego",
+                                "state" : "OR",
+                                "country" : "United States"
+                            },
+                            "categories" : [
+                                {
+                                    "id" : "4d954b06a243a5684965b473",
+                                    "name" : "Residential Building (Apartment \/ Condo)",
+                                    "pluralName" : "Residential Buildings (Apartments \/ Condos)",
+                                    "shortName" : "Residential",
+                                    "icon" : {
+                                        "prefix" : "https:\/\/ss1.4sqi.net\/img\/categories_v2\/building\/apartment_",
+                                        "suffix" : ".png"
+                                    },
+                                    "primary" : true
+                                }
+                            ],
+                            "verified" : false,
+                            "stats" : {
+                                "checkinsCount" : 285,
+                                "usersCount" : 58,
+                                "tipCount" : 1
+                            },
+                            "specials" : {
+                                "count" : 0,
+                                "items" : [
+
+                                ]
+                            },
+                            "hereNow" : {
+                                "count" : 0,
+                                "summary" : "0 people here",
+                                "groups" : [
+
+                                ]
+                            },
+                            "referralId" : "v-1398957965"
+                        },
+                        {
+                            "id" : "4bb3e846643cd13ae429395c",
+                            "name" : "Westside Christian High School",
+                            "contact" : {
+
+                            },
+                            "location" : {
+                                "lat" : 45.42066711976636,
+                                "lng" : -122.72392287911403,
+                                "distance" : 206,
+                                "postalCode" : "97035",
+                                "cc" : "US",
+                                "city" : "Lake Oswego",
+                                "state" : "OR",
+                                "country" : "United States"
+                            },
+                            "categories" : [
+                                {
+                                    "id" : "4bf58dd8d48988d13d941735",
+                                    "name" : "High School",
+                                    "pluralName" : "High Schools",
+                                    "shortName" : "High School",
+                                    "icon" : {
+                                        "prefix" : "https:\/\/ss1.4sqi.net\/img\/categories_v2\/building\/school_",
+                                        "suffix" : ".png"
+                                    },
+                                    "primary" : true
+                                }
+                            ],
+                            "verified" : false,
+                            "stats" : {
+                                "checkinsCount" : 161,
+                                "usersCount" : 25,
+                                "tipCount" : 1
+                            },
+                            "specials" : {
+                                "count" : 0,
+                                "items" : [
+
+                                ]
+                            },
+                            "hereNow" : {
+                                "count" : 0,
+                                "summary" : "0 people here",
+                                "groups" : [
+
+                                ]
+                            },
+                            "referralId" : "v-1398957965"
+                        },
+                        {
+                            "id" : "4e08dbc518a8382643bd66ff",
+                            "name" : "4949 Meadows",
+                            "contact" : {
+
+                            },
+                            "location" : {
+                                "address" : "4949 Meadows Rd",
+                                "lat" : 45.417897,
+                                "lng" : -122.727492,
+                                "distance" : 298,
+                                "postalCode" : "97035",
+                                "cc" : "US",
+                                "city" : "Lake Oswego",
+                                "state" : "OR",
+                                "country" : "United States"
+                            },
+                            "categories" : [
+                                {
+                                    "id" : "4bf58dd8d48988d124941735",
+                                    "name" : "Office",
+                                    "pluralName" : "Offices",
+                                    "shortName" : "Office",
+                                    "icon" : {
+                                        "prefix" : "https:\/\/ss1.4sqi.net\/img\/categories_v2\/building\/default_",
+                                        "suffix" : ".png"
+                                    },
+                                    "primary" : true
+                                }
+                            ],
+                            "verified" : false,
+                            "stats" : {
+                                "checkinsCount" : 449,
+                                "usersCount" : 20,
+                                "tipCount" : 0
+                            },
+                            "specials" : {
+                                "count" : 0,
+                                "items" : [
+
+                                ]
+                            },
+                            "hereNow" : {
+                                "count" : 0,
+                                "summary" : "0 people here",
+                                "groups" : [
+
+                                ]
+                            },
+                            "referralId" : "v-1398957965"
+                        }
+                    ],
+                    "neighborhoods" : [
+
+                    ],
+                    "confident" : false
+                }
+            }
+
+
+
+
+
+
+
+## GET /places/:placeId
+    or foursquare id?
+    creates the place if not found
+    returns place data
+    returns list of perks
+    recent tips (paginated, first page)
+    list of subscriptions/perks
+
+## GET /subscriptions/:subscription_id/perks
+    get all perks for this sub
+
+## GET /subscriptions/:subscription_id/perks/:perk_id
+    show perk
+
+## POST /subscriptions/:subscription_id/perks/:perk_id
+    update perk
+
+## DELETE /subscriptions/:subscription_id/perks/:perk_id
+    delete perk
+
+## POST /subscriptions/:subscription_id/perks
+    create perk
+
+
+
+
+
+
