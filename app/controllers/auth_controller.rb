@@ -1,31 +1,11 @@
 class AuthController < Devise::OmniauthCallbacksController
-  # def self.provides_callback_for(provider)
-  #   class_eval %Q{
-  #     def #{provider}
-  #       omniauth_params = request.env["omniauth.params"].with_indifferent_access
-  #       @user = User.find_for_oauth(env["omniauth.auth"], current_user)
-
-  #       if @user.persisted?
-  #         sign_in_and_redirect @user, event: :authentication
-  #         set_flash_message(:notice, :success, kind: #{provider}.capitalize) if is_navigational_format?
-  #       else
-  #         session["devise.#{provider}_data"] = env["omniauth.auth"]
-  #         if params[:redirect_to]
-  #           redirect_to params[:redirect_to]
-  #         else
-  #           redirect_to new_user_registration_url
-  #         end
-  #       end
-  #     end
-  #   }
-  # end
-
-  # [:twitter, :facebook].each do |provider|
-  #   provides_callback_for provider
-  # end
 
   def facebook
     callback_for :facebook
+  end
+
+  def twitter
+    callback_for :twitter
   end
 
   def destroy
@@ -52,5 +32,8 @@ class AuthController < Devise::OmniauthCallbacksController
     end
   end
 
+  def after_sign_in_path_for(user)
+    profile_path
+  end
 
 end
