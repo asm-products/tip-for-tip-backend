@@ -5,6 +5,7 @@ class CreateIdentities < ActiveRecord::Migration
       t.references :user
       t.string :uid
       t.string :provider
+      t.string :token
       t.datetime :token_expires_at
       t.text :profile_data
 
