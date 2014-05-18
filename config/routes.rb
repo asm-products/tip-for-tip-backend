@@ -4,7 +4,8 @@ Rails.application.routes.draw do
   # devise_for :users
 
   devise_for :users, controllers: { omniauth_callbacks: 'auth' }, path: ''
-  # get 'auth/logout', to: 'auth#destroy', as: :destroy_user_session, via: [:get, :delete, :post]
-
+  devise_scope :user do
+    get 'auth/logout', to: 'auth#destroy', as: :destroy_user_session, via: [:get, :delete, :post]
+  end
 
 end
