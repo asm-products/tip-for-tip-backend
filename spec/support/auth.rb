@@ -1,22 +1,22 @@
-module SpecHelpers
+module Support
   module Auth
 
-    # def self.setup_user(user, options={})
-    #   if user.is_a?(Hash)
-    #     options = user.symbolize_keys.reverse_merge options.symbolize_keys
-    #     user = nil
-    #   end
+    def self.setup_user(user, options={})
+      if user.is_a?(Hash)
+        options = user.symbolize_keys.reverse_merge options.symbolize_keys
+        user = nil
+      end
 
-    #   if user.nil?
-    #     if options[:admin]
-    #       user = FactoryGirl.create(:admin_user)
-    #     else
-    #       user = FactoryGirl.create(:user)
-    #     end
-    #   end
+      if user.nil?
+        if options[:admin]
+          user = FactoryGirl.create(:admin_user)
+        else
+          user = FactoryGirl.create(:user)
+        end
+      end
 
-    #   [user, options]
-    # end
+      [user, options]
+    end
 
     module OmniauthMocks
 
@@ -33,21 +33,21 @@ module SpecHelpers
     end
 
 
-    # module Controller
+    module Controller
 
-    #   def login(user=nil, options={})
-    #     @request.env["devise.mapping"] = Devise.mappings[:user]
-    #     user = ::SpecHelpers::Auth.setup_user(user, options)
-    #     sign_in @user
-    #     allow(controller).to receive(:current_user).and_return(user)
-    #     user
-    #   end
+      def login(user=nil, options={})
+        request.env["devise.mapping"] = Devise.mappings[:user]
+        user, options = ::Support::Auth.setup_user(user, options)
+        sign_in user
+        allow(controller).to receive(:current_user).and_return(user)
+        user
+      end
 
-    #   # def stub_doorkeeper(user = nil, token = nil)
-    #   #   allow(controller).to receive(:doorkeeper_token) { token || double(:accessible? => true) }
-    #   #   allow(controller).to receive(:current_resource_owner) { user || FactoryGirl.create(:group_member) }
-    #   # end
-    # end
+      # def stub_doorkeeper(user = nil, token = nil)
+      #   allow(controller).to receive(:doorkeeper_token) { token || double(:accessible? => true) }
+      #   allow(controller).to receive(:current_resource_owner) { user || FactoryGirl.create(:group_member) }
+      # end
+    end
 
     module Feature
 
@@ -72,10 +72,9 @@ RSpec.configure do |config|
   OmniAuth.config.test_mode = true
   # OmniauthMocks module methods add provider specific auth objects to the
   # OmniAuth mock object.
-  config.include SpecHelpers::Auth::OmniauthMocks
+  config.include Support::Auth::OmniauthMocks
 
-  # config.include Devise::TestHelpers, type: :request
-  # config.include SpecHelpers::Auth::Controller, type: :controller
-  # config.include SpecHelpers::Auth::Request, type: :request
-  config.include SpecHelpers::Auth::Feature, type: :feature
+  config.include Support::Auth::Controller, type: :controller
+  # config.include Support::Auth::Request, type: :request
+  config.include Support::Auth::Feature, type: :feature
 end

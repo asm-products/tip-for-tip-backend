@@ -8,7 +8,11 @@ Rails.application.routes.draw do
   end
 
   scope module: 'api', constraints: ApiConstraints.new(version: 1, default: :true), defaults: { format: :json } do
-    get 'profile', to: 'users#profile'
+
+    get '/profile', to: 'users#profile'
+
+    get '/foursquare/*foursquare_path', to: 'foursquare#proxy'
+
   end
 
 end
