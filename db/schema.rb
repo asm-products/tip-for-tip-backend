@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140519090232) do
+ActiveRecord::Schema.define(version: 20140519091401) do
 
   create_table "identities", force: true do |t|
     t.integer  "user_id"
@@ -63,12 +63,23 @@ ActiveRecord::Schema.define(version: 20140519090232) do
   add_index "nouns_things", ["uuid"], name: "index_nouns_things_on_uuid", unique: true, using: :btree
 
   create_table "partners", force: true do |t|
-    t.integer  "primary_user_id"
+    t.integer  "primary_user_id", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "partners", ["primary_user_id"], name: "index_partners_on_primary_user_id", using: :btree
+
+  create_table "subscriptions", force: true do |t|
+    t.integer  "partner_id", null: false
+    t.integer  "noun_id",    null: false
+    t.string   "noun_type",  null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "subscriptions", ["noun_id", "noun_type"], name: "index_subscriptions_on_noun_id_and_noun_type", using: :btree
+  add_index "subscriptions", ["partner_id"], name: "index_subscriptions_on_partner_id", using: :btree
 
   create_table "tips", force: true do |t|
     t.string   "uuid",                         limit: 36, null: false

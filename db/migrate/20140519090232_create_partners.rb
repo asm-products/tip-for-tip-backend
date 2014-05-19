@@ -5,7 +5,7 @@ class CreatePartners < ActiveRecord::Migration
     add_index :users, :partner_id
 
     create_table :partners do |t|
-      t.references :primary_user
+      t.references :primary_user, null: false
       t.timestamps
     end
 

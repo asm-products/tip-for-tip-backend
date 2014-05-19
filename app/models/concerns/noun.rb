@@ -5,6 +5,7 @@ module Noun
   included do
     include Uuid
     has_many :tips, as: :noun
+    has_many :subscriptions, as: :noun
   end
 
 end
