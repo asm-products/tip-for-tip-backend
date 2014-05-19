@@ -10,6 +10,8 @@ module Uuid
     validates_uniqueness_of :uuid
     validates_presence_of   :uuid
 
+    # TODO: validate format of uuid
+
   end
 
   def generate_uuid

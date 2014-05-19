@@ -66,6 +66,9 @@ ActiveRecord::Schema.define(version: 20140518033757) do
     t.string   "uuid",                         limit: 36, null: false
     t.string   "subject",                                 null: false
     t.text     "body",                                    null: false
+    t.integer  "user_id"
+    t.integer  "noun_id"
+    t.string   "noun_type"
     t.boolean  "is_annonymous"
     t.boolean  "can_purchase_with_reputation"
     t.boolean  "sent"
@@ -74,7 +77,9 @@ ActiveRecord::Schema.define(version: 20140518033757) do
     t.datetime "updated_at"
   end
 
+  add_index "tips", ["noun_id", "noun_type"], name: "index_tips_on_noun_id_and_noun_type", using: :btree
   add_index "tips", ["sent"], name: "index_tips_on_sent", using: :btree
+  add_index "tips", ["user_id"], name: "index_tips_on_user_id", using: :btree
   add_index "tips", ["uuid"], name: "index_tips_on_uuid", unique: true, using: :btree
 
   create_table "users", force: true do |t|

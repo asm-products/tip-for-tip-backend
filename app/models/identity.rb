@@ -1,8 +1,8 @@
 class Identity < ActiveRecord::Base
 
-  validates_uniqueness_of :user_id, scope: :provider
-
   belongs_to :user
+
+  validates_uniqueness_of :user_id, scope: :provider
 
   def self.find_for_oauth(auth)
     identity = find_by(provider: auth.provider, uid: auth.uid)

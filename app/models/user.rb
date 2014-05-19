@@ -1,6 +1,9 @@
 class User < ActiveRecord::Base
   include Uuid
 
+  has_many :identities
+  has_many :tips
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :omniauthable, :trackable, :rememberable
@@ -11,9 +14,6 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :uuid
   validates_uniqueness_of :email
   validates_uniqueness_of :username
-
-  has_many :identities
-
 
   # Public: Finds or creates the user for omniauth authentication.
   # Syncs data.

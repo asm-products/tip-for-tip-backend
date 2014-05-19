@@ -4,8 +4,4 @@ module Nouns
     'nouns_'
   end
 
-  class Noun < ActiveRecord::Base
-    include Uuid
-  end
-
 end

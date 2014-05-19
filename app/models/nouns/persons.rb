@@ -1,4 +1,5 @@
-class Nouns::Person < Noun
+class Nouns::Person < ActiveRecord::Base
+  include Noun
 
   validates_presence_of :name
 
