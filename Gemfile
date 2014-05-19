@@ -37,10 +37,7 @@ gem 'unicorn'
 
 
 group :development do
-
   gem 'spring'
-  gem 'factory_girl_rails'
-  gem 'faker'
   gem 'pry'
   gem 'pry-doc'
   gem 'pry-rails'
@@ -48,18 +45,22 @@ group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'foreman'
+end
 
+group :development, :test do
+  gem 'factory_girl_rails'
+  gem 'faker'
 end
 
 group :test do
-
-  gem 'rspec-rails'
+  gem 'rspec', '~> 2.99.0.rc1'
+  gem 'rspec-rails', '~> 2.99.0.rc1'
+  gem 'capybara'
+  # gem "nyan-cat-formatter"
   gem 'database_cleaner'
   gem 'shoulda-matchers'
   gem 'timecop'
   gem 'webmock'
-
-
 end
 
 # Use debugger

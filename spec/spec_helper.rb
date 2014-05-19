@@ -2,7 +2,10 @@ ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'
+require 'capybara/rails'
+require 'capybara/rspec'
 require 'webmock/rspec'
+require 'factory_girl'
 
 Rails.application.routes.default_url_options[:host] = 'local.tipfortip.com'
 
@@ -25,6 +28,9 @@ RSpec.configure do |config|
   #     --seed 1234
   config.order = 'random'
 
+  # Nyan!
+  # config.formatter = NyanFormatter
+
   config.expect_with :rspec do |c|
     # disable the `should` syntax
     c.syntax = :expect
@@ -34,5 +40,14 @@ RSpec.configure do |config|
     Rails.cache.clear
   end
 
+  # rspec-rails 3 will no longer automatically infer an example group's spec type
+  # from the file location. You can explicitly opt-in to this feature using this
+  # snippet:
+  config.infer_spec_type_from_file_location!
+
   WebMock.disable_net_connect!(allow_localhost: true)
+
+  config.mock_with :rspec do |c|
+    c.yield_receiver_to_any_instance_implementation_blocks = true
+  end
 end
