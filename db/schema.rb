@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140518032523) do
+ActiveRecord::Schema.define(version: 20140518033757) do
 
   create_table "identities", force: true do |t|
     t.integer  "user_id"
@@ -58,6 +58,15 @@ ActiveRecord::Schema.define(version: 20140518032523) do
 
   add_index "nouns_things", ["name"], name: "index_nouns_things_on_name", using: :btree
   add_index "nouns_things", ["uuid"], name: "index_nouns_things_on_uuid", using: :btree
+
+  create_table "tips", force: true do |t|
+    t.boolean  "is_annonymous"
+    t.boolean  "can_purchase_with_reputation"
+    t.boolean  "sent"
+    t.datetime "send_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", force: true do |t|
     t.string   "uuid",                             null: false
