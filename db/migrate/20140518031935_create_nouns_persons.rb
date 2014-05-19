@@ -10,12 +10,12 @@ class CreateNounsPersons < ActiveRecord::Migration
     # persons when a specific, countable number of individuals is meant, but that
     # people should be used when the number is large or indefinite.
     create_table :nouns_persons do |t|
-      t.string :uuid, null: false, unique: true
+      t.string :uuid, null: false, unique: true, limit: 36
       t.string :name, null: false
       t.timestamps
     end
 
-    add_index :nouns_persons, :uuid
+    add_index :nouns_persons, :uuid, unique: true
     add_index :nouns_persons, :name
   end
 end
