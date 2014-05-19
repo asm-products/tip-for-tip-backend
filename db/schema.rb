@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140518033757) do
+ActiveRecord::Schema.define(version: 20140519090232) do
 
   create_table "identities", force: true do |t|
     t.integer  "user_id"
@@ -62,6 +62,14 @@ ActiveRecord::Schema.define(version: 20140518033757) do
   add_index "nouns_things", ["name"], name: "index_nouns_things_on_name", using: :btree
   add_index "nouns_things", ["uuid"], name: "index_nouns_things_on_uuid", unique: true, using: :btree
 
+  create_table "partners", force: true do |t|
+    t.integer  "primary_user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "partners", ["primary_user_id"], name: "index_partners_on_primary_user_id", using: :btree
+
   create_table "tips", force: true do |t|
     t.string   "uuid",                         limit: 36, null: false
     t.string   "subject",                                 null: false
@@ -99,9 +107,11 @@ ActiveRecord::Schema.define(version: 20140518033757) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
+    t.integer  "partner_id"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["partner_id"], name: "index_users_on_partner_id", using: :btree
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
   add_index "users", ["uuid"], name: "index_users_on_uuid", unique: true, using: :btree
 

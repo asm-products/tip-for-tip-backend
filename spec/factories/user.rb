@@ -9,4 +9,8 @@ FactoryGirl.define do
     timezone "-7"
   end
 
+  factory :primary_user, parent: :user do
+
+  end
+
 end
