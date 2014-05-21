@@ -232,7 +232,7 @@ Devise.setup do |config|
   # ==> OmniAuth
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
-  # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
+  puts "RAILS ENVIRONMENT #{Rails.env}"
   facebook_secrets = Rails.application.secrets.facebook.with_indifferent_access
   config.omniauth :facebook, facebook_secrets[:client_id], facebook_secrets[:client_secret]
   twitter_secrets = Rails.application.secrets.twitter.with_indifferent_access
