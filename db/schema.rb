@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140519091401) do
+ActiveRecord::Schema.define(version: 20140519092442) do
 
   create_table "identities", force: true do |t|
     t.integer  "user_id"
@@ -69,6 +69,15 @@ ActiveRecord::Schema.define(version: 20140519091401) do
   end
 
   add_index "partners", ["primary_user_id"], name: "index_partners_on_primary_user_id", using: :btree
+
+  create_table "perks", force: true do |t|
+    t.integer  "subscription_id", null: false
+    t.string   "title",           null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "perks", ["subscription_id"], name: "index_perks_on_subscription_id", using: :btree
 
   create_table "subscriptions", force: true do |t|
     t.integer  "partner_id", null: false
