@@ -16,6 +16,8 @@ Bundler.require(*Rails.groups)
 module TipForTip
   class Application < Rails::Application
 
+    config.autoload_paths += Dir["#{config.root}/lib/**/"]
+
     # Configure asset precompilation for heroku deployment
     config.assets.initialize_on_precompile = true
 
