@@ -1,0 +1,27 @@
+# Build Environment
+build_environment: Ubuntu 12.04
+
+# language setting
+language: ruby
+
+rvm:
+  - 2.1.1
+
+before_script:
+  - mkdir -p shippable/codecoverage
+  - mkdir -p shippable/testresults
+
+# write the rspec tests to the output dir
+script:
+  - rspec -o shippable/testresults/results.xml
+
+after_script:
+  # - ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- -u tdd
+  # - ./node_modules/.bin/istanbul report cobertura --dir  shippable/codecoverage/
+
+notifications:
+  email:
+    - amos@tipfortip.com
+    - kirk@tipfortip.com
+  on_success: change
+  on_failure: always
