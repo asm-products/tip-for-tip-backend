@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140519092442) do
+ActiveRecord::Schema.define(version: 20140527043151) do
 
   create_table "identities", force: true do |t|
     t.integer  "user_id"
@@ -45,8 +45,10 @@ ActiveRecord::Schema.define(version: 20140519092442) do
     t.text     "foursquare_data"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "foursquare_id"
   end
 
+  add_index "nouns_places", ["foursquare_id"], name: "index_nouns_places_on_foursquare_id", using: :btree
   add_index "nouns_places", ["latitude"], name: "index_nouns_places_on_latitude", using: :btree
   add_index "nouns_places", ["longitude"], name: "index_nouns_places_on_longitude", using: :btree
   add_index "nouns_places", ["name"], name: "index_nouns_places_on_name", using: :btree

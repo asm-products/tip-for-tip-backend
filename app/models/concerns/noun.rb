@@ -6,6 +6,7 @@ module Noun
     include Uuid
     has_many :tips, as: :noun
     has_many :subscriptions, as: :noun
+    has_many :perks, through: :subscriptions
   end
 
 end

@@ -425,20 +425,83 @@ Direct pipe into foursquare thru our API. We add client_id and client_secret on 
 
 
 
-## GET /places/:place_id
-    or foursquare id?
+## GET /nouns/places/:place_id
+Get a place by its id.
+
+The associated data returned includes limited perk and tip data, paginated when
+necessary.
+
+<!--
     creates the place if not found
     returns place data
     returns list of perks
     recent tips (paginated, first page)
     list of subscriptions/perks
-    
+ -->
+
++ Response 200
+
+    + Body
+
+            {
+                "id":7,
+                "uuid":"6d085313e43a9d420999faaf87a83be9",
+                "name":"Starbucks",
+                "latitude":-36.4234,
+                "longitude":-88.5432,
+                "created_at":"2014-05-19T02:00:04.000-07:00",
+                "updated_at":"2014-05-19T02:00:04.000-07:00",
+
+                "perks_count":1,
+                "perks": [
+
+                ],
+
+                "tips_count":3,
+                "tips": [
+
+                ]
+            }
+
+## GET /nouns/places/foursquare/:foursquare_id
+Get a place by its Foursquare id. The data returned is the T4T data on the place,
+not necessarily the Foursquare data. The response body is the same as the
+`GET /nouns/places/:place_id` request.
+
+A key difference is that if a place is requested using foursquare id but is not
+found locally, a record is created for it.
+
++ Response 200
+
+    + Body
+
+            {
+                "id":7,
+                "uuid":"6d085313e43a9d420999faaf87a83be9",
+                "name":"Starbucks",
+                "latitude":-36.4234,
+                "longitude":-88.5432,
+                "created_at":"2014-05-19T02:00:04.000-07:00",
+                "updated_at":"2014-05-19T02:00:04.000-07:00",
+
+                "perks_count":1,
+                "perks": [
+
+                ],
+
+                "tips_count":3,
+                "tips": [
+
+                ]
+            }
+
+
 ## GET /subscriptions/:subscription_id/perks
     get all perks for this sub
 
 ## GET /subscriptions/:subscription_id/perks/:perk_id
     show perk
-    
+
 ## POST /subscriptions/:subscription_id/perks/:perk_id
     update perk
 
@@ -447,7 +510,7 @@ Direct pipe into foursquare thru our API. We add client_id and client_secret on 
 
 ## POST /subscriptions/:subscription_id/perks
     create perk
-    
+
 
 
 
