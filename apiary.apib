@@ -37,7 +37,7 @@ Logout. Clears the user's session and auth tokens.
 User related resources.
 
 ## GET /profile
-Retrieve the current user's user and profile data.
+Retrieve the current user's user, identity, and profile data.
 
 + Response 200 (application/json)
 
@@ -45,14 +45,23 @@ Retrieve the current user's user and profile data.
 
             {
                 id: 1,
-                username: "1762fe11-ce3c-11e3-88f1-012052b12982",
-                firstName: "Amos",
-                lastName: null,
-                email: "amoslanka@gmail.com",
-                uuid: "1762fe10-ce3c-11e3-88f1-012052b12982",
+                username: "1762fe11",
+                first_name: "Bruce",
+                last_name: "Chelmsford,
+                email: "bruce@example.com",
+                uuid: "1762fe10",
                 timezone: -7,
                 locale: "en_US",
-                updatedAt: "2014-04-27T18:45:23.000Z",
+                updated_at: "2014-04-27T18:45:23.000Z",
+                identities: [
+                    {
+                        uid: "12345",
+                        provider: "facebook",
+                        token: "abcdefg12345",
+                        token_expires_at: "2014-07-24T22:13:45.000-07:00"
+                    }
+                ]
+
             }
 
 + Response 401 (application/json)
@@ -68,9 +77,11 @@ Retrieve the current user's user and profile data.
 
 # Group Tips
 
-## POST /:nounType/:nounId?/tips
+## POST /:noun_type/:noun_id?/tips
 
 - Requires a current user
+
+Amos, FYI: https://github.com/apiaryio/api-blueprint/issues/86
 
 Create a tip for a noun. If a noun id is provided, the noun will be looked up, but otherwise one will be created. The current user will be assigned as the tipper. If the noun has not yet had a tip, the user will be set as the first tipper.
 
@@ -82,19 +93,25 @@ Examples:
 
 + Parameters
 
-    + nounType (string)               ... The type of noun the created tip will be created for. May be one of the available noun types.
-    + nounId   (optional, string)     ... The id of the noun to create the tip for. This parameter is optional. If left out, the other provided noun attributes will be used to find or create the noun.
-    + isAnonymous (optional, boolean) ... If true, the tip will be displayed without revealing the identity of the tipper. Default: false
-    + canPurchaseWithReputation (optional, boolean) ... If true, the readers of the tip can purchase it using reputation points. Default: false
+    + noun_type (string)               ... The type of noun the created tip will be created for. May be one of the available noun types.
+    + noun_id   (optional, string)     ... The id of the noun to create the tip for. This parameter is optional. If left out, the other provided noun attributes will be used to find or create the noun.
+    + is_anonymous (optional, boolean) ... If true, the tip will be displayed without revealing the identity of the tipper. Default: false
+    + can_purchase_with_reputation (optional, boolean) ... If true, the readers of the tip can purchase it using reputation points. Default: false
+
++ Request (application/json)
+
+        {
+            nounType: "place",
+            is_anonymous: false,
+            can_purchase_with_reputation: true
+        }
 
 + Response 201 (application/json)
 
-    + Body
-
-            {
-                "id": "1163ef90-cddf-11e3-9f6d-85ee8d939f6f",
-                "nounId": "012052b12982-1762fe10-ce3c-11e3-88f1"
-            }
+        {
+            "id": "1163ef90-cddf-11e3-9f6d-85ee8d939f6f",
+            "noun_id": "012052b12982-1762fe10-ce3c-11e3-88f1"
+        }
 
 + Response 401 (application/json)
 
@@ -408,20 +425,20 @@ Direct pipe into foursquare thru our API. We add client_id and client_secret on 
 
 
 
-## GET /places/:placeId
+## GET /places/:place_id
     or foursquare id?
     creates the place if not found
     returns place data
     returns list of perks
     recent tips (paginated, first page)
     list of subscriptions/perks
-
+    
 ## GET /subscriptions/:subscription_id/perks
     get all perks for this sub
 
 ## GET /subscriptions/:subscription_id/perks/:perk_id
     show perk
-
+    
 ## POST /subscriptions/:subscription_id/perks/:perk_id
     update perk
 
@@ -430,7 +447,7 @@ Direct pipe into foursquare thru our API. We add client_id and client_secret on 
 
 ## POST /subscriptions/:subscription_id/perks
     create perk
-
+    
 
 
 
