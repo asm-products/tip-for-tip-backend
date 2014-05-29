@@ -135,6 +135,279 @@ Search for tips based on the search query.
                 TODO
             }
 
+
+
+
+
+
+
+# Group Nouns
+
+## GET /nouns/places/:place_id
+Get a place by its id.
+
+The associated data returned includes limited perk and tip data, paginated when
+necessary.
+
+<!--
+    creates the place if not found
+    returns place data
+    returns list of perks
+    recent tips (paginated, first page)
+    list of subscriptions/perks
+-->
+<!--
+Questions:
+    paginate perks?
+
+Todos:
+    paginate tips
+-->
+
++ Response 200
+
+    + Body
+
+            {
+                "id":7,
+                "uuid":"6d085313e43a9d420999faaf87a83be9",
+                "name":"Starbucks",
+                "latitude":-36.4234,
+                "longitude":-88.5432,
+                "created_at":"2014-05-19T02:00:04.000-07:00",
+                "updated_at":"2014-05-19T02:00:04.000-07:00",
+
+                "perks_count":1,
+                "perks": [
+
+                ],
+
+                "tips_count":3,
+                "tips": [
+
+                ]
+            }
+
+
+## GET /nouns/places/foursquare/:foursquare_id
+Get a place by its Foursquare id. The data returned is the T4T data on the place,
+not necessarily the Foursquare data. The response body is the same as the
+`GET /nouns/places/:place_id` request.
+
+A key difference is that if a place is requested using foursquare id but is not
+found locally, a record is created for it.
+
++ Response 200
+
+    + Body
+
+            {
+                "id":7,
+                "uuid":"6d085313e43a9d420999faaf87a83be9",
+                "name":"Starbucks",
+                "latitude":-36.4234,
+                "longitude":-88.5432,
+                "created_at":"2014-05-19T02:00:04.000-07:00",
+                "updated_at":"2014-05-19T02:00:04.000-07:00",
+
+                "perks_count":1,
+                "perks": [
+                    <!-- todo -->
+                ],
+
+                "tips_count":3,
+                "tips": [
+                    <!-- todo -->
+                ]
+            }
+
+
+# Group Subscriptions and Perks
+
+## GET /subscriptions/:subscription_id
+Retrieve a subscription's set of data. Includes the subscription's associated
+noun, perks, and partnership.
+
+<!--
+Questions:
+    paginate perks?
+    how much noun data to provide?
+    how much partner data to privide
+-->
+
++ Response 200
+
+    + Body
+            {
+                "id": 33,
+                "guid": "967d563aac9f9ba7d1de3a22e4a10d36",
+                "noun": {
+                    "id": 7,
+                    "guid": "6d085313e43a9d420999faaf87a83be9",
+                    "type": "place",
+                    "name": "Starbucks",
+                    "created_at":"2014-05-19T02:00:04.000-07:00",
+                    "updated_at":"2014-05-19T02:00:04.000-07:00"
+                },
+                "partner": {
+                    "id": 88,
+                    "guid": "axd85313e43a9d330999faaf87a3dbe9",
+                    "primary_user_id": 55,
+
+                    <!-- todo -->
+
+                    "created_at":"2014-05-19T02:00:04.000-07:00",
+                    "updated_at":"2014-05-19T02:00:04.000-07:00"
+                }
+                "perks": [
+                    {
+                        "id": 99,
+                        "title": "Free cup of coffee!",
+                        "created_at":"2014-05-19T02:00:04.000-07:00",
+                        "updated_at":"2014-05-19T02:00:04.000-07:00"
+                    }
+                ]
+            }
+
++ Response 404
+
+    A 404 is returned if the subscription cannot be found using the provided id.
+
+
+## GET /perks/:perk_id
+Retreive information about a single perk.
+
+    + Reponse 200
+
+        + Body
+
+                {
+                    "id": 99,
+                    "title": "Free cup of coffee!",
+                    "subscription_id": 33,
+                    "partner": {
+                        "id": 88,
+                        "guid": "axd85313e43a9d330999faaf87a3dbe9",
+                        "primary_user_id": 55,
+
+                        <!-- todo -->
+
+                        "created_at":"2014-05-19T02:00:04.000-07:00",
+                        "updated_at":"2014-05-19T02:00:04.000-07:00"
+                    }
+                    "created_at":"2014-05-19T02:00:04.000-07:00",
+                    "updated_at":"2014-05-19T02:00:04.000-07:00"
+                }
+
+    + Response 404 Not Found
+        If the perk cannot be found using the provided id.
+
+## PUT /subscription/:subscription_id/perks
+Create a perk. Perks must be added to a subscription, and so they are RESTfully
+nested within the subscription namespace. The successful response body provides
+the same body as the `GET /perks/:perk_id` request.
+
+    + Request (application/json)
+
+            {
+                title: "2 Free cups of coffee!"
+            }
+
+    + Response 201 Created
+
+        + Body
+
+                {
+                    "id": 99,
+                    "title": "Free cup of coffee!",
+                    "subscription_id": 33,
+                    "partner": {
+                        "id": 88,
+                        "guid": "axd85313e43a9d330999faaf87a3dbe9",
+                        "primary_user_id": 55,
+
+                        <!-- todo -->
+
+                        "created_at":"2014-05-19T02:00:04.000-07:00",
+                        "updated_at":"2014-05-19T02:00:04.000-07:00"
+                    }
+                    "created_at":"2014-05-19T02:00:04.000-07:00",
+                    "updated_at":"2014-05-19T02:00:04.000-07:00"
+                }
+
+    + Response 404 Not Found
+        If the subscription cannot be found using the provided id.
+
+    + Response 422 Unprocessible Entity
+        If any provided attribute values are invalid. Structured errors will be
+        provided in the response body.
+
+        + Body
+
+                {
+                    "errors": [
+                        {
+                            "resource": "Perk",
+                            "resource_id": 99,
+                            "parameter": "title",
+                            "message": "is invalid.",
+                            "code": "invalid"
+                        }
+                    ]
+                }
+
+    + Response 401 Unauthorized
+        If the current user is not the primary user on the partnership owning
+        the subscription or in any other way does not have a role with permission to
+        update the partnership's perks.
+
+
+## PATCH /perks/:perk_id
+Update a perk. Being a patch, any single attributes can be sent or ommitted
+only the attributes sent will be updated.
+
+    + Request (application/json)
+
+            {
+                title: "2 Free cups of coffee!"
+            }
+
+    + Response 200 OK
+
+    + Response 404 Not Found
+        If the perk cannot be found using the provided id.
+
+    + Response 422 Unprocessible Entity
+        If any provided attribute values are invalid. Structured errors will be
+        provided in the response body.
+
+        + Body
+
+                {
+                    "errors": [
+                        {
+                            "resource": "Perk",
+                            "resource_id": 99,
+                            "parameter": "title",
+                            "message": "is invalid.",
+                            "code": "invalid"
+                        }
+                    ]
+                }
+
+    + Response 401 Unauthorized
+        If the current user is not the primary user on the partnership owning
+        the perk or in any other way does not have a role with permission to
+        update the partnership's perks.
+
+## DELETE /perks/:perk_id
+Remove a perk.
+
+    + Response 200 Ok
+        The perk was successfully removed.
+
+
+
 # Group Foursquare
 
 Provides a proxy for the Foursquare API, attaching the appropriate api keys
@@ -418,101 +691,5 @@ Direct pipe into foursquare thru our API. We add client_id and client_secret on 
                     "confident" : false
                 }
             }
-
-
-
-
-
-
-
-## GET /nouns/places/:place_id
-Get a place by its id.
-
-The associated data returned includes limited perk and tip data, paginated when
-necessary.
-
-<!--
-    creates the place if not found
-    returns place data
-    returns list of perks
-    recent tips (paginated, first page)
-    list of subscriptions/perks
- -->
-
-+ Response 200
-
-    + Body
-
-            {
-                "id":7,
-                "uuid":"6d085313e43a9d420999faaf87a83be9",
-                "name":"Starbucks",
-                "latitude":-36.4234,
-                "longitude":-88.5432,
-                "created_at":"2014-05-19T02:00:04.000-07:00",
-                "updated_at":"2014-05-19T02:00:04.000-07:00",
-
-                "perks_count":1,
-                "perks": [
-
-                ],
-
-                "tips_count":3,
-                "tips": [
-
-                ]
-            }
-
-## GET /nouns/places/foursquare/:foursquare_id
-Get a place by its Foursquare id. The data returned is the T4T data on the place,
-not necessarily the Foursquare data. The response body is the same as the
-`GET /nouns/places/:place_id` request.
-
-A key difference is that if a place is requested using foursquare id but is not
-found locally, a record is created for it.
-
-+ Response 200
-
-    + Body
-
-            {
-                "id":7,
-                "uuid":"6d085313e43a9d420999faaf87a83be9",
-                "name":"Starbucks",
-                "latitude":-36.4234,
-                "longitude":-88.5432,
-                "created_at":"2014-05-19T02:00:04.000-07:00",
-                "updated_at":"2014-05-19T02:00:04.000-07:00",
-
-                "perks_count":1,
-                "perks": [
-
-                ],
-
-                "tips_count":3,
-                "tips": [
-
-                ]
-            }
-
-
-## GET /subscriptions/:subscription_id/perks
-    get all perks for this sub
-
-## GET /subscriptions/:subscription_id/perks/:perk_id
-    show perk
-
-## POST /subscriptions/:subscription_id/perks/:perk_id
-    update perk
-
-## DELETE /subscriptions/:subscription_id/perks/:perk_id
-    delete perk
-
-## POST /subscriptions/:subscription_id/perks
-    create perk
-
-
-
-
 
 
