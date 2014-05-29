@@ -238,6 +238,7 @@ Questions:
 + Response 200
 
     + Body
+    
             {
                 "id": 33,
                 "guid": "967d563aac9f9ba7d1de3a22e4a10d36",
@@ -270,37 +271,36 @@ Questions:
             }
 
 + Response 404
-
-    A 404 is returned if the subscription cannot be found using the provided id.
+    If the subscription cannot be found using the provided id.
 
 
 ## GET /perks/:perk_id
 Retreive information about a single perk.
 
-    + Reponse 200
++ Response 200
 
-        + Body
+    + Body
 
-                {
-                    "id": 99,
-                    "title": "Free cup of coffee!",
-                    "subscription_id": 33,
-                    "partner": {
-                        "id": 88,
-                        "guid": "axd85313e43a9d330999faaf87a3dbe9",
-                        "primary_user_id": 55,
+            {
+                "id": 99,
+                "title": "Free cup of coffee!",
+                "subscription_id": 33,
+                "partner": {
+                    "id": 88,
+                    "guid": "axd85313e43a9d330999faaf87a3dbe9",
+                    "primary_user_id": 55,
 
-                        <!-- todo -->
+                    <!-- todo -->
 
-                        "created_at":"2014-05-19T02:00:04.000-07:00",
-                        "updated_at":"2014-05-19T02:00:04.000-07:00"
-                    }
                     "created_at":"2014-05-19T02:00:04.000-07:00",
                     "updated_at":"2014-05-19T02:00:04.000-07:00"
                 }
+                "created_at":"2014-05-19T02:00:04.000-07:00",
+                "updated_at":"2014-05-19T02:00:04.000-07:00"
+            }
 
-    + Response 404 Not Found
-        If the perk cannot be found using the provided id.
++ Response 404 Not Found
+If the perk cannot be found using the provided id.
 
 ## PUT /subscription/:subscription_id/perks
 Create a perk. Perks must be added to a subscription, and so they are RESTfully
