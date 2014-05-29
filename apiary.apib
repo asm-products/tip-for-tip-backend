@@ -221,84 +221,25 @@ found locally, a record is created for it.
                 ]
             }
 
-
-# Group Subscriptions and Partners
-
-## Subscription [/subscriptions/:subscription_id]
-
-A single subscription object.
-
-+ Parameters
-    + subscription_id (string or integer) ... Id or uuid of the subscription.
-
-### Retrieve a Single Subscription [GET]
-
-Retrieve a subscription's set of data. Includes the subscription's associated
-noun, perks, and partnership.
- 
 <!--
-Questions:
-    paginate perks?
-    how much noun data to provide?
-    how much partner data to privide
+==========================================
+Perks
+==========================================
 -->
 
-Expected Responses: 
-
-- `200 OK` If the subscription was found.
-- `404 Not Found` If the subscription cannot be found using the provided id.
-
-+ Response 200
-
-    + Body
-
-            {
-                "id": 33,
-                "guid": "967d563aac9f9ba7d1de3a22e4a10d36",
-                "noun": {
-                    "id": 7,
-                    "guid": "6d085313e43a9d420999faaf87a83be9",
-                    "type": "place",
-                    "name": "Starbucks",
-                    "created_at":"2014-05-19T02:00:04.000-07:00",
-                    "updated_at":"2014-05-19T02:00:04.000-07:00"
-                },
-                "partner": {
-                    "id": 88,
-                    "guid": "axd85313e43a9d330999faaf87a3dbe9",
-                    "primary_user_id": 55,
-
-                    <!-- todo -->
-
-                    "created_at":"2014-05-19T02:00:04.000-07:00",
-                    "updated_at":"2014-05-19T02:00:04.000-07:00"
-                }
-                "perks": [
-                    {
-                        "id": 99,
-                        "title": "Free cup of coffee!",
-                        "created_at":"2014-05-19T02:00:04.000-07:00",
-                        "updated_at":"2014-05-19T02:00:04.000-07:00"
-                    }
-                ]
-            }
-
-+ Response 404
-
-    
 # Group Perks
 
-## Perk [/subscriptions/:perk_id]
+## Perk [/perks/:perk_id]
 
-A single perk object. Perks are readable by any user, but are only editable or 
+A single perk object. Perks are readable by any user, but are only editable or
 removable by a user with permissions to manage a partner/subscription's perks.
 
 + Parameters
-    + perk_id (string or integer) ... Id or uuid of the perk.
-    
+    + perk_id (string or integer) ... Id or uuid of the resource.
+
 + Model (application/json)
 
-    JSON representation of Perk resource. 
+    JSON representation of Perk resource.
 
     + Body
 
@@ -322,20 +263,20 @@ removable by a user with permissions to manage a partner/subscription's perks.
 
 ### Retrieve a Single Perk [GET]
 
-Retreive information about a single perk. 
+Retreive information about a single perk.
 
 Expected responses:
 
 - `200 OK` if the resource was found.
-- `404 Not Found` if the resource was not found.
+- `404 Not Found` if the resource was not found using the provided id.
 
-+ Response 200 
++ Response 200
     [Perk][]
-+ Response 404 
-    
++ Response 404
+
 ## Edit a Perk [PATCH]
 
-Any single attributes can be sent or ommitted only the attributes sent 
+Any single attributes can be sent or ommitted only the attributes sent
 will be updated.
 
 Expected responses:
@@ -344,7 +285,7 @@ Expected responses:
 - `401 Unauthorized` if the current user is not the primary user on the partnership owning
     the perk or in any other way does not have a role with permission to
     update the partnership's perks.
-- `404 Not Found` if the resource was not found.
+- `404 Not Found` if the resource was not found using the provided id.
 - `422 Unprocessible Entity` if any provided attribute values are invalid. Structured errors will be
     provided in the response body.
 
@@ -354,11 +295,11 @@ Expected responses:
             title: "2 Free cups of coffee!"
         }
 
-+ Response 200 
++ Response 200
     [Perk][]
-+ Response 404 
-+ Response 422 
-    
++ Response 401
++ Response 404
++ Response 422
     + Body
 
             {
@@ -373,7 +314,6 @@ Expected responses:
                 ]
             }
 
-+ Response 401
 
 ### Remove a Perk [DELETE]
 Remove a perk.
@@ -384,19 +324,26 @@ Expected Responses:
 - `401 Unauthorized` if the current user is not the primary user on the partnership owning
     the perk or in any other way does not have a role with permission to
     update the partnership's perks.
-- `404 Not Found` if the resource was not found.
+- `404 Not Found` if the resource was not found using the provided id.
 
 + Response 204
 + Response 401
 + Response 404
-    
+
+<!-- ========================== -->
 
 ## Perks Collection [/subscription/:subscription_id/perks]
 Collection of all perks in the specified subscription.
 
 ### List All Perks [GET]
 
+<!--
+    TODO: We want the ability to list perks by subscription, partner, user
+    as well as by noun (/nouns/places/:place_id/perks)
+ -->
+
 + Response 200
+    <!-- todo -->
 + Response 404
 
 ## Create a Perk [POST]
@@ -404,66 +351,126 @@ Create a perk. Perks must be added to a subscription, and so they are RESTfully
 nested within the subscription namespace. The successful response body provides
 the same body as the `GET /perks/:perk_id` request.
 
-+ Request (application/json)
+Expected Responses:
 
+- `200 OK` if the subscription resource was found.
+- `401 Unauthorized` if the current user is not the primary user on the partnership owning
+    the subscription or in any other way does not have a role with permission to
+    update the partnership's perks.
+- `404 Not Found` if the resource was not found using the provided id.
+- `422 Unprocessible Entity` if any provided attribute values are invalid. Structured errors will be
+    provided in the response body.
+
++ Request (application/json)
         {
             title: "2 Free cups of coffee!"
         }
 
-+ Response 201 Created
++ Response 201
+    [Perk][]
++ Response 401
++ Response 404
++ Response 422
+        {
+            "errors": [
+                {
+                    "resource": "Perk",
+                    "resource_id": 99,
+                    "parameter": "title",
+                    "message": "is invalid.",
+                    "code": "invalid"
+                }
+            ]
+        }
+
+<!--
+==========================================
+Partners
+==========================================
+ -->
+
+# Group Partners
+
+## Partner [/partner/:partner_id]
+
+A Partner resource. The partner has users and a primary user associated to
+as well as subscriptions and a subscriptions's perks. Viewing partner data is also
+limited to users assigned to the partner and the primary partner.
+
++ Parameters
+    + perk_id (string or integer) ... Id or uuid of the resource.
+
++ Model (application/json)
+
+    <!--
+    Questions:
+        paginate perks?
+        how much noun data to provide?
+        how much sub and partner data to provide?
+    -->
+
+    JSON representation of a Partner resource.
 
     + Body
 
             {
-                "id": 99,
-                "title": "Free cup of coffee!",
-                "subscription_id": 33,
-                "partner": {
-                    "id": 88,
-                    "guid": "axd85313e43a9d330999faaf87a3dbe9",
-                    "primary_user_id": 55,
+                "id": 33,
+                "primary_user_id": 11,
+                "user_ids": [ 12, 13 ],
 
-                    <!-- todo -->
+                <!-- todo -->
 
-                    "created_at":"2014-05-19T02:00:04.000-07:00",
-                    "updated_at":"2014-05-19T02:00:04.000-07:00"
-                }
+                "subscriptions": [
+                    {
+                        "id": 44,
+                        "noun": {
+                            "id": 7,
+                            "guid": "6d085313e43a9d420999faaf87a83be9",
+                            "type": "place",
+                            "name": "Starbucks",
+                            "created_at":"2014-05-19T02:00:04.000-07:00",
+                            "updated_at":"2014-05-19T02:00:04.000-07:00"
+                        },
+                        "perks": [
+                            {
+                                "id": 99,
+                                "title": "Free cup of coffee!",
+                                "created_at":"2014-05-19T02:00:04.000-07:00",
+                                "updated_at":"2014-05-19T02:00:04.000-07:00"
+                            }
+                        ]
+                        "created_at":"2014-05-19T02:00:04.000-07:00",
+                        "updated_at":"2014-05-19T02:00:04.000-07:00"
+                    }
+                ],
+
                 "created_at":"2014-05-19T02:00:04.000-07:00",
                 "updated_at":"2014-05-19T02:00:04.000-07:00"
             }
 
-+ Response 404 Not Found
-    If the subscription cannot be found using the provided id.
+### Retrieve a Single Partner [GET]
 
-+ Response 422 Unprocessible Entity
-    If any provided attribute values are invalid. Structured errors will be
-    provided in the response body.
+Retrieve a partner's set of data. Includes the subscription's associated
+noun, perks, and partnership.
 
-    + Body
+Expected responses:
 
-            {
-                "errors": [
-                    {
-                        "resource": "Perk",
-                        "resource_id": 99,
-                        "parameter": "title",
-                        "message": "is invalid.",
-                        "code": "invalid"
-                    }
-                ]
-            }
+- `200 OK` if the resource was found.
+- `401 Unauthorized` if the user is not a member of the partner resource.
+- `404 Not Found` if the resource was not found using the provided id.
 
-+ Response 401 Unauthorized
-    If the current user is not the primary user on the partnership owning
-    the subscription or in any other way does not have a role with permission to
-    update the partnership's perks.
++ Response 200
+    [Partner][]
++ Response 401
++ Response 404
 
+<!--
+==========================================
+Foursquare Proxy
+==========================================
+ -->
 
-
-
-
-
-# Group Foursquare
+# Group Foursquare Proxy
 
 Provides a proxy for the Foursquare API, attaching the appropriate api keys
 as authorization. Responses will also provide a subset of headers returned by
