@@ -224,16 +224,29 @@ found locally, a record is created for it.
 
 # Group Subscriptions and Perks
 
-## GET /subscriptions/:subscription_id
+## Subscription [/subscriptions/:subscription_id]
+
+A single subscription object.
+
++ Parameters
+    + subscription_id (string or integer) ... Id or uuid of the subscription.
+
+### Retrieve a Single Subscription [GET]
+
 Retrieve a subscription's set of data. Includes the subscription's associated
 noun, perks, and partnership.
-
+ 
 <!--
 Questions:
     paginate perks?
     how much noun data to provide?
     how much partner data to privide
 -->
+
+Expected Responses: 
+
+- `200 OK` If the subscription was found.
+- `404 Not Found` If the subscription cannot be found using the provided id.
 
 + Response 200
 
@@ -271,13 +284,18 @@ Questions:
             }
 
 + Response 404
-    If the subscription cannot be found using the provided id.
+    
 
+## Perk [/subscriptions/:perk_id]
 
-## GET /perks/:perk_id
-Retreive information about a single perk.
+A single perk object. 
 
-+ Response 200 Ok
++ Parameters
+    + perk_id (string or integer) ... Id or uuid of the perk.
+    
++ Model (application/json)
+
+    JSON representation of Perk resource. 
 
     + Body
 
@@ -299,10 +317,75 @@ Retreive information about a single perk.
                 "updated_at":"2014-05-19T02:00:04.000-07:00"
             }
 
-+ Response 404 Not Found
-    If the perk cannot be found using the provided id.
+### Retrieve a Single Perk [GET]
 
-## PUT /subscription/:subscription_id/perks
+Retreive information about a single perk.
+
+Expected responses:
+
+- `200 OK` if the resource was found.
+- `404 Not Found` if the resource was not found.
+
++ Response 200 
+
+    [Perk][]
+
++ Response 404 
+    
+## Edit a Perk [PATCH]
+
+Any single attributes can be sent or ommitted only the attributes sent 
+will be updated.
+
+Expected responses:
+
+- `200 OK` if the resource was found.
+- `401 Unauthorized` if the current user is not the primary user on the partnership owning
+    the perk or in any other way does not have a role with permission to
+    update the partnership's perks.
+- `404 Not Found` if the resource was not found.
+- `422 Unprocessible Entity` if any provided attribute values are invalid. Structured errors will be
+    provided in the response body.
+
++ Request (application/json)
+
+        {
+            title: "2 Free cups of coffee!"
+        }
+
++ Response 200 
+    [Perk][]
+
++ Response 404 
++ Response 422 
+    
+    + Body
+
+            {
+                "errors": [
+                    {
+                        "resource": "Perk",
+                        "resource_id": 99,
+                        "parameter": "title",
+                        "message": "is invalid.",
+                        "code": "invalid"
+                    }
+                ]
+            }
+
++ Response 401
+
+
+
+## Perks Collection [/subscription/:subscription_id/perks]
+Collection of all perks in the specified subscription.
+
+### List All Perks [GET]
+
++ Response 200
++ Response 404
+
+## Create a Perk [POST]
 Create a perk. Perks must be added to a subscription, and so they are RESTfully
 nested within the subscription namespace. The successful response body provides
 the same body as the `GET /perks/:perk_id` request.
@@ -362,43 +445,6 @@ the same body as the `GET /perks/:perk_id` request.
     update the partnership's perks.
 
 
-## PATCH /perks/:perk_id
-Update a perk. Being a patch, any single attributes can be sent or ommitted
-only the attributes sent will be updated.
-
-+ Request (application/json)
-
-        {
-            title: "2 Free cups of coffee!"
-        }
-
-+ Response 200 OK
-
-+ Response 404 Not Found
-    If the perk cannot be found using the provided id.
-
-+ Response 422 Unprocessible Entity
-    If any provided attribute values are invalid. Structured errors will be
-    provided in the response body.
-
-    + Body
-
-            {
-                "errors": [
-                    {
-                        "resource": "Perk",
-                        "resource_id": 99,
-                        "parameter": "title",
-                        "message": "is invalid.",
-                        "code": "invalid"
-                    }
-                ]
-            }
-
-+ Response 401 Unauthorized
-    If the current user is not the primary user on the partnership owning
-    the perk or in any other way does not have a role with permission to
-    update the partnership's perks.
 
 ## DELETE /perks/:perk_id
 Remove a perk.
