@@ -5,9 +5,16 @@ class ApplicationController < ActionController::Base
 
   # Errors
   rescue_from Errors::Unauthorized, with: :error_401
+  rescue_from ActiveRecord::RecordNotFound, with: :error_404
 
   def error_401
-    render status: :unauthorized, nothing: true
+    # TODO: better response error message
+    render status: :unauthorized, json: { error: :unauthorized}
+  end
+
+  def error_404
+    # TODO: better response error message
+    render status: :not_found, json: { error: :not_found }
   end
 
 end

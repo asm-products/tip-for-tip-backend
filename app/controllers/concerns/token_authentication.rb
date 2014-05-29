@@ -30,7 +30,7 @@ module TokenAuthentication
     end
 
     if user
-      logger.debug "Authenticated user using token: #{user.id}"
+      logger.debug "Authenticated user id=#{user.id} using token."
       # Sign the user in but don't store an auth cookie.
       sign_in user, store: false
     end

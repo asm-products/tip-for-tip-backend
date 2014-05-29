@@ -43,6 +43,13 @@ module Support
         user
       end
 
+      def stub_token_authentication(user=nil, options={})
+        user, options = ::Support::Auth.setup_user(user, options)
+        allow(controller).to receive(:authenticate_user_from_token).and_return(:user)
+        controller.sign_in user, store: false
+        user
+      end
+
       # def stub_doorkeeper(user = nil, token = nil)
       #   allow(controller).to receive(:doorkeeper_token) { token || double(:accessible? => true) }
       #   allow(controller).to receive(:current_resource_owner) { user || FactoryGirl.create(:group_member) }

@@ -5,6 +5,7 @@ class Identity < ActiveRecord::Base
 
   # Validations
   validates_uniqueness_of :user_id, scope: :provider
+  validates_uniqueness_of :token
 
   # Callbacks
   after_find :clear_expired_token

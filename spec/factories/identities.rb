@@ -4,9 +4,9 @@ FactoryGirl.define do
       token_expires_at 1.day.ago
     end
 
-    uid "123abc"
+    uid SecureRandom.hex(1)
     provider "facebook"
-    token "CAAE8y2c"
+    token SecureRandom.hex(2)
     token_expires_at 1.week.from_now
   end
 

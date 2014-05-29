@@ -1,4 +1,5 @@
 class Perk < ActiveRecord::Base
+  include Uuid
 
   belongs_to :subscription
 
