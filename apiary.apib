@@ -288,7 +288,8 @@ Expected Responses:
 
 ## Perk [/subscriptions/:perk_id]
 
-A single perk object. 
+A single perk object. Perks are readable by any user, but are only editable or 
+removable by a user with permissions to manage a partner/subscription's perks.
 
 + Parameters
     + perk_id (string or integer) ... Id or uuid of the perk.
@@ -319,7 +320,7 @@ A single perk object.
 
 ### Retrieve a Single Perk [GET]
 
-Retreive information about a single perk.
+Retreive information about a single perk. 
 
 Expected responses:
 
@@ -327,9 +328,7 @@ Expected responses:
 - `404 Not Found` if the resource was not found.
 
 + Response 200 
-
     [Perk][]
-
 + Response 404 
     
 ## Edit a Perk [PATCH]
@@ -355,7 +354,6 @@ Expected responses:
 
 + Response 200 
     [Perk][]
-
 + Response 404 
 + Response 422 
     
@@ -374,6 +372,23 @@ Expected responses:
             }
 
 + Response 401
+
+### Remove a Perk [DELETE]
+Remove a perk.
+
+Expected Responses:
+
+- `204 No Content` if the resource was successfully removed.
+- `401 Unauthorized` if the current user is not the primary user on the partnership owning
+    the perk or in any other way does not have a role with permission to
+    update the partnership's perks.
+- `404 Not Found` if the resource was not found.
+
++ Response 204
++ Response 401
++ Response 404
+    
+
 
 
 
@@ -446,11 +461,6 @@ the same body as the `GET /perks/:perk_id` request.
 
 
 
-## DELETE /perks/:perk_id
-Remove a perk.
-
-+ Response 200 Ok
-    The perk was successfully removed.
 
 
 
