@@ -56,8 +56,8 @@ group :development, :test do
 end
 
 group :test do
-  gem 'rspec', '~> 2.99.0.rc1'
-  gem 'rspec-rails', '~> 2.99.0.rc1'
+  gem 'rspec', '~> 3.0.0'
+  gem 'rspec-rails', '~> 3.0.0'
   gem 'capybara'
   # gem "nyan-cat-formatter"
   gem 'database_cleaner'
