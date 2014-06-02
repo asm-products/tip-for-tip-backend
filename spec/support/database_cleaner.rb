@@ -6,14 +6,9 @@ RSpec.configure do |config|
     DatabaseCleaner.strategy = :transaction
   end
 
-  # config.around(:each) do |spec|
-  #   if spec.metadata[:js]
-  #     spec.run
-  #     DatabaseCleaner.clean_with :truncation
-  #   else
-  #     DatabaseCleaner.start
-  #     spec.run
-  #     DatabaseCleaner.clean
-  #   end
-  # end
+  config.around(:each) do |spec|
+    DatabaseCleaner.start
+    spec.run
+    DatabaseCleaner.clean
+  end
 end

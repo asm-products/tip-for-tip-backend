@@ -6,7 +6,9 @@ class Api::Nouns::PlacesController < ApplicationController
   before_filter :authenticate_user!
 
   def show
-    @place = ::Nouns::Place.find show_params[:place_id]
+    id = show_params[:place_id]
+    @place = ::Nouns::Place.where('id = ? OR uuid = ?', id, id).first
+    raise ActiveRecord::RecordNotFound.new(show_params[:place_id]) unless @place
   end
 
   def foursquare_show
