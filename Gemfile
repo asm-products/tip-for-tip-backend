@@ -60,7 +60,7 @@ end
 group :test do
   gem 'rspec', '~> 3.0.0'
   gem 'rspec-rails', '~> 3.0.0'
-  gem 'capybara'
+  gem 'capybara', github: 'jnicklas/capybara', branch: '2.2_stable'
   # gem "nyan-cat-formatter"
   gem 'database_cleaner'
   gem 'shoulda-matchers'
