@@ -1,5 +1,10 @@
 module Api
   class FoursquareController < ApplicationController
+    include TokenAuthentication
+    include FoursquareClient
+    include FoursquareErrors
+
+    before_filter :authenticate_user_from_token
     before_filter :authenticate_user!
 
     # Rescues
@@ -15,10 +20,10 @@ module Api
 
       # We bypass the shortcut methods the client gem offers for us and
       # build a request the same way those methods do.
-      foursquare_response = client.connection.get do |req|
+      foursquare_response = foursquare_client.connection.get do |req|
         req.url foursquare_path, foursquare_params
       end
-      body = client.return_error_or_body(foursquare_response, foursquare_response.body)
+      body = foursquare_client.return_error_or_body(foursquare_response, foursquare_response.body)
 
       # Get response headers that we care about
       response.headers.merge! foursquare_response.headers.slice('x-ratelimit-limit', 'x-ratelimit-remaining')
@@ -28,25 +33,9 @@ module Api
 
     private
 
-    # def handle_foursquare_api_error(e)
-
-    # end
-
-    def client
-      @client ||= Foursquare2::Client.new foursquare_credentials
-      # TODO: in the future when we have users authing via foursquare (saves us on ratelimits):
-      # client = Foursquare2::Client.new(:oauth_token => 'user_oauth_token')
-    end
-
     def foursquare_params
       params.except(:controller, :action, :foursquare_path, :format)
     end
 
-    def foursquare_credentials
-      @creds ||= {
-        client_id: Rails.application.secrets.foursquare['client_id'],
-        client_secret: Rails.application.secrets.foursquare['client_secret']
-      }
-    end
   end
 end

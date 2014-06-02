@@ -47,7 +47,9 @@ group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'foreman'
-  gem 'apiary'
+  # problem with apiary gem is that it depends on thin,
+  # and thin breaks when starting this app. not sure why yet.
+  # gem 'apiary'
 end
 
 group :development, :test do

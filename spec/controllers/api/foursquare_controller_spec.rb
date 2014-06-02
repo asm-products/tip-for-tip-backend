@@ -2,6 +2,7 @@ require 'spec_helper.rb'
 include Support::FoursquareMock
 
 describe Api::FoursquareController do
+  before { accept_json }
 
   describe '#proxy request' do
 

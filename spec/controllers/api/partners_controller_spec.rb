@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Api::PartnersController do
+  before { accept_json }
 
   describe "GET 'show'" do
     let(:partner) { FactoryGirl.create :partner, primary_user: user }
@@ -27,6 +28,5 @@ describe Api::PartnersController do
     end
 
   end
-
 
 end
