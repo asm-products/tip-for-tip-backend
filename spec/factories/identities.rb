@@ -4,17 +4,25 @@ FactoryGirl.define do
       token_expires_at 1.day.ago
     end
 
-    uid SecureRandom.hex(1)
-    provider "facebook"
-    token SecureRandom.hex(2)
+    trait :facebook do
+      provider "facebook"
+    end
+
+    trait :twitter do
+      provider "twitter"
+    end
+
+    facebook
+    uid { SecureRandom.hex(4) }
+    token { SecureRandom.hex(4) }
     token_expires_at 1.week.from_now
   end
 
   factory :facebook_identity do
-    provider "facebook"
+    facebook
   end
 
   factory :twitter_identity do
-    provider "twitter"
+    twitter
   end
 end

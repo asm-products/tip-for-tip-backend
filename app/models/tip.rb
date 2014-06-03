@@ -3,6 +3,8 @@ class Tip < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :noun, polymorphic: true
+  has_many :purchases
+  has_many :purchasers, through: :purchases, source: :user, inverse_of: :purchased_tips
 
   validates_presence_of :subject
   validates_presence_of :body

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140529065747) do
+ActiveRecord::Schema.define(version: 20140603071712) do
 
   create_table "identities", force: true do |t|
     t.integer  "user_id"
@@ -82,6 +82,24 @@ ActiveRecord::Schema.define(version: 20140529065747) do
 
   add_index "perks", ["subscription_id"], name: "index_perks_on_subscription_id", using: :btree
   add_index "perks", ["uuid"], name: "index_perks_on_uuid", using: :btree
+
+  create_table "purchases", force: true do |t|
+    t.string   "service"
+    t.text     "receipt_data"
+    t.string   "transaction_id"
+    t.datetime "transaction_timestamp"
+    t.integer  "transaction_value"
+    t.string   "transaction_currency"
+    t.integer  "tip_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "purchases", ["service"], name: "index_purchases_on_service", using: :btree
+  add_index "purchases", ["tip_id"], name: "index_purchases_on_tip_id", using: :btree
+  add_index "purchases", ["transaction_id"], name: "index_purchases_on_transaction_id", using: :btree
+  add_index "purchases", ["user_id"], name: "index_purchases_on_user_id", using: :btree
 
   create_table "subscriptions", force: true do |t|
     t.integer  "partner_id", null: false
