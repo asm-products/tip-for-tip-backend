@@ -17,7 +17,7 @@ class Api::Nouns::PlacesController < ApplicationController
 
     unless @place
       response.status = :created
-      @place = fetch_and_create_from_foursquare(foursquare_show_params[:foursquare_id])
+      @place = FoursquarePlaceCreator.new.(foursquare_show_params[:foursquare_id])
     end
 
     render :show
@@ -33,13 +33,6 @@ class Api::Nouns::PlacesController < ApplicationController
   def foursquare_show_params
     params.require(:foursquare_id)
     params.permit(:foursquare_id)
-  end
-
-  def fetch_and_create_from_foursquare id
-    data = foursquare_client.venue id
-    place = ::Nouns::Place.create_from_foursquare! data
-    logger.info "Record created for Foursquare place: #{place.foursquare_id} (#{place.name})"
-    place
   end
 
 end
