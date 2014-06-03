@@ -1,5 +1,5 @@
-require 'rails_helper'
+require 'spec_helper.rb'
 
-RSpec.describe Purchase, :type => :model do
+describe Purchase do
   pending "add some examples to (or delete) #{__FILE__}"
 end

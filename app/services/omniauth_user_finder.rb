@@ -52,6 +52,8 @@ class OmniauthUserFinder
     # Associate the identity with the user if not already
     identity.user = user
     identity.save!
+
+    user
   end
 
 end

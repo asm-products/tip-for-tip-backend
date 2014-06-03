@@ -1,6 +1,6 @@
 require 'spec_helper.rb'
 
-feature "Login via Facebook" do
+feature "Session login via Facebook" do
 
   before do
     mock_facebook_omniauth
