@@ -19,7 +19,7 @@ class AuthController < Devise::OmniauthCallbacksController
     omniauth_params = request.env["omniauth.params"].with_indifferent_access
     redirect_url = omniauth_params[:redirect_to]
 
-    @user = User.find_for_oauth(request.env["omniauth.auth"], current_user)
+    @user = OmniauthUserFinder.new.(request.env["omniauth.auth"], current_user)
     if @user.persisted?
       redirect_url ||= after_sign_in_path_for(resource)
       sign_in @user, event: :authentication #this will throw if @user is not activated

@@ -16,18 +16,6 @@ class Identity < ActiveRecord::Base
 
 
 
-  # TODO: move this out of this model.
-  def self.find_for_oauth(auth)
-    identity = find_by(provider: auth.provider, uid: auth.uid)
-    identity ||= create(uid: auth.uid, provider: auth.provider)
-    expires_at = DateTime.strptime auth.credentials.expires_at.to_s, '%s' rescue nil
-    identity.update_attributes! token: auth.credentials.token,
-                                token_expires_at: expires_at,
-                                profile_data: (auth.extra.raw_info.to_hash rescue nil)
-    identity
-  end
-
-
 
   private
 
