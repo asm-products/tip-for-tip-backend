@@ -24,14 +24,6 @@ describe Api::PurchasesController do
     # Auth
     it { should use_before_filter(:authenticate_user_from_token!) }
 
-    # it { should permit(:tip_id).for(:create, params: valid_params, verb: :post) }
-    # it { should permit(:service).for(:create, params: valid_params, verb: :post) }
-    # it { should permit(:receipt_data).for(:create, params: valid_params, verb: :post) }
-    # it { should permit(:transaction_id).for(:create, params: valid_params, verb: :post) }
-    # it { should permit(:transaction_value).for(:create, params: valid_params, verb: :post) }
-    # it { should permit(:transaction_currency).for(:create, params: valid_params, verb: :post) }
-    # it { should permit(:transaction_timestamp).for(:create, params: valid_params, verb: :post) }
-
     # Success
     it "returns http created when successful" do
       post :create, valid_params
@@ -53,4 +45,18 @@ describe Api::PurchasesController do
     end
 
   end
+
+  describe '#purchase_params' do
+    # it { should permit(:tip_id).for(:create, params: valid_params, verb: :post) }
+    # it { should permit(:service).for(:create, params: valid_params, verb: :post) }
+    # it { should permit(:receipt_data).for(:create, params: valid_params, verb: :post) }
+    # it { should permit(:transaction_id).for(:create, params: valid_params, verb: :post) }
+    # it { should permit(:transaction_value).for(:create, params: valid_params, verb: :post) }
+    # it { should permit(:transaction_currency).for(:create, params: valid_params, verb: :post) }
+    # it { should permit(:transaction_timestamp).for(:create, params: valid_params, verb: :post) }
+
+    it('permits') { expect() }
+
+  end
+
 end

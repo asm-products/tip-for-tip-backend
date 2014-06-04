@@ -23,4 +23,5 @@ class Api::PurchasesController < ApiController
   end
   memoize :purchase_params
 
+
 end

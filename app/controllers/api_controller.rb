@@ -9,6 +9,8 @@ class ApiController < ApplicationController
   # Errors
   rescue_from Errors::Unauthorized, with: :unauthorized
   rescue_from ActiveRecord::RecordNotFound, with: :not_found
+  # rescue_from ActionController::ParameterMissing #TODO: strong params rescue
+  # rescue_from ActiveRecord::RecordInvalid #TODO 422 responses
 
   protected
 
