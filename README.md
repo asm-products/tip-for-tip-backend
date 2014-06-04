@@ -94,7 +94,7 @@ rspec
 Documentation
 -------------
 
-The API interface is specified using (Apiary)[http://docs.tipfortip.apiary.io/]. Changes
+The API interface is specified using [Apiary](http://docs.tipfortip.apiary.io/). Changes
 to the `apiary.apib` file in this repo are picked up on pushes to Github automatically and
 reflected on Apiary.
 
