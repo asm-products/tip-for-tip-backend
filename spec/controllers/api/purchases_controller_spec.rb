@@ -54,9 +54,6 @@ describe Api::PurchasesController do
     # it { should permit(:transaction_value).for(:create, params: valid_params, verb: :post) }
     # it { should permit(:transaction_currency).for(:create, params: valid_params, verb: :post) }
     # it { should permit(:transaction_timestamp).for(:create, params: valid_params, verb: :post) }
-
-    it('permits') { expect() }
-
   end
 
 end
