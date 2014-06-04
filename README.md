@@ -15,6 +15,7 @@ Summary
 - Rails 4
 - [Mysql](#database)
 - [Rspec](#testing)
+- [Hosted on Heroku](#deployment)
 - [Apiary for documentation](#documentation)
 
 Quick commands
