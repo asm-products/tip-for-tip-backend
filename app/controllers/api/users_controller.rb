@@ -1,12 +1,7 @@
-module Api
-  class UsersController < ApplicationController
-    include TokenAuthentication
+class Api::UsersController < ApiController
+  before_filter :authenticate_user_from_token!
 
-    before_filter :authenticate_user_from_token
-    before_filter :authenticate_user!
-
-    def profile
-    end
-
+  def profile
   end
+
 end

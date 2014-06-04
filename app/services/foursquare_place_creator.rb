@@ -1,4 +1,4 @@
-# Retrieves a venue from foursquare and creates a Nouns::Place instance for it.
+# Retrieves venue data from foursquare and creates a Nouns::Place instance for it.
 # The service request returns the created place.
 class FoursquarePlaceCreator
   include FoursquareClient

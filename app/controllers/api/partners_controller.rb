@@ -1,5 +1,4 @@
-class Api::PartnersController < ApplicationController
-  include TokenAuthentication
+class Api::PartnersController < ApiController
   before_filter :authenticate_user_from_token!
 
   def show

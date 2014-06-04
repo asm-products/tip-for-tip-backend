@@ -1,10 +1,8 @@
-class Api::Nouns::PlacesController < ApplicationController
-  include TokenAuthentication
+class Api::Nouns::PlacesController < ApiController
   include FoursquareClient
   include FoursquareErrors
 
-  before_filter :authenticate_user_from_token
-  before_filter :authenticate_user!
+  before_filter :authenticate_user_from_token!
 
   def show
     id = show_params[:place_id]
