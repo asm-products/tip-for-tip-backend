@@ -7,6 +7,9 @@ describe Api::Nouns::PlacesController do
 
   describe '#show' do
 
+    # Auth
+    it { should use_before_filter(:authenticate_user_from_token!) }
+
     context 'if found' do
       let(:place) { FactoryGirl.create :place }
 

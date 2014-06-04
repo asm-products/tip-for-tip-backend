@@ -4,13 +4,6 @@ describe Api::PurchasesController do
   before { accept_json }
   let!(:user) { user = stub_token_authentication }
 
-  it { permit(:tip_id).for(:create) }
-  it { permit(:service).for(:create) }
-  it { permit(:receipt_data).for(:create) }
-  it { permit(:transaction_id).for(:create) }
-  it { permit(:transaction_value).for(:create) }
-  it { permit(:transaction_currency).for(:create) }
-  it { permit(:transaction_timestamp).for(:create) }
   it { should filter_param(:receipt_data) }
 
   describe "GET 'create'" do
@@ -28,7 +21,19 @@ describe Api::PurchasesController do
       }
     end
 
-    it "returns http success" do
+    # Auth
+    it { should use_before_filter(:authenticate_user_from_token!) }
+
+    # it { should permit(:tip_id).for(:create, params: valid_params, verb: :post) }
+    # it { should permit(:service).for(:create, params: valid_params, verb: :post) }
+    # it { should permit(:receipt_data).for(:create, params: valid_params, verb: :post) }
+    # it { should permit(:transaction_id).for(:create, params: valid_params, verb: :post) }
+    # it { should permit(:transaction_value).for(:create, params: valid_params, verb: :post) }
+    # it { should permit(:transaction_currency).for(:create, params: valid_params, verb: :post) }
+    # it { should permit(:transaction_timestamp).for(:create, params: valid_params, verb: :post) }
+
+    # Success
+    it "returns http created when successful" do
       post :create, valid_params
       expect(response.status).to be 201
     end

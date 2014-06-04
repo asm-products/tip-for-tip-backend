@@ -6,6 +6,10 @@ describe Api::FoursquareController do
   let!(:user) { user = stub_token_authentication }
 
   describe '#proxy request' do
+
+    # Auth
+    it { should use_before_filter(:authenticate_user_from_token!) }
+
     it "responds with the body of the foursquare response" do
       params = mock_foursquare_venue_search.merge foursquare_path: '/v2/venues/search'
       get :proxy, params

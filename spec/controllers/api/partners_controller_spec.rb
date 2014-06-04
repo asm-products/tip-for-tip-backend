@@ -7,9 +7,12 @@ describe Api::PartnersController do
     let(:partner) { FactoryGirl.create :partner, primary_user: user }
     let!(:user) { user = stub_token_authentication }
 
+    # Auth
+    it { should use_before_filter(:authenticate_user_from_token!) }
+
+    # Success
     it "returns http success" do
       get :show, partner_id: partner.id
-      p response.body
       expect(response.status).to eq 200
     end
 
