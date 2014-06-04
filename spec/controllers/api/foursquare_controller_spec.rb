@@ -3,11 +3,9 @@ include Support::FoursquareMock
 
 describe Api::FoursquareController do
   before { accept_json }
+  let!(:user) { user = stub_token_authentication }
 
   describe '#proxy request' do
-
-    before { login }
-
     it "responds with the body of the foursquare response" do
       params = mock_foursquare_venue_search.merge foursquare_path: '/v2/venues/search'
       get :proxy, params

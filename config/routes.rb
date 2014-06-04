@@ -2,6 +2,10 @@ require 'api_constraints'
 
 Rails.application.routes.draw do
 
+  namespace :api do
+  get 'purchases/create'
+  end
+
   devise_for :users, controllers: { omniauth_callbacks: 'auth' }, path: ''
   devise_scope :user do
     get 'auth/logout', to: 'auth#destroy', as: :destroy_user_session, via: [:get, :delete, :post]
@@ -18,6 +22,9 @@ Rails.application.routes.draw do
       get '/places/:place_id', to: 'places#show', as: :place
 
     end
+
+    get  '/tips/:tip_id' => 'tips#show', as: :tip
+    post '/tips/:tip_id/purchase/:service' => 'purchases#create', as: :purchase_tip
 
     get '/partners/:partner_id' => 'partners#show', as: :partner
     get '/foursquare/*foursquare_path', to: 'foursquare#proxy'
