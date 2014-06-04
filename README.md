@@ -13,9 +13,9 @@ Summary
 -------
 
 - Rails 4
-- [Mysql](#Database)
-- [Rspec](#Testing)
-- [Apiary for documentation](#Documentation)
+- [Mysql](#database)
+- [Rspec](#testing)
+- [Apiary for documentation](#documentation)
 
 Quick commands
 --------------
@@ -89,3 +89,11 @@ is used for fixtures. To run the tests:
 ```
 rspec
 ```
+
+Documentation
+-------------
+
+The API interface is specified using (Apiary)[http://docs.tipfortip.apiary.io/]. Changes
+to the `apiary.apib` file in this repo are picked up on pushes to Github automatically and
+reflected on Apiary.
+
