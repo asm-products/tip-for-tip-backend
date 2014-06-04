@@ -3,7 +3,7 @@ Tip for Tip Backend/API
 
 The Tip for Tip database, API, and management. TRIPLE BAM!
 
-<img src='http://cl.ly/image/442N191I2L0g/gif.gif' />
+<img src='http://cl.ly/image/442N191I2L0g/gif.gif' width='100%' />
 
 ---
 
