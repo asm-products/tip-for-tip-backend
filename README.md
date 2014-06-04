@@ -3,6 +3,8 @@ Tip for Tip Backend/API
 
 The Tip for Tip database, API, and management. TRIPLE BAM!
 
+---
+
 <img src='http://cl.ly/image/442N191I2L0g/gif.gif' width='100%' />
 
 ---
@@ -11,7 +13,7 @@ Summary
 -------
 
 - Rails 4
-- Mysql
+- [Mysql](#Database)
 - [Rspec](#Testing)
 - [Apiary for documentation](#Documentation)
 
