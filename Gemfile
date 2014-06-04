@@ -14,6 +14,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
+gem 'memoist'
+
 gem 'foursquare2'
 
 gem 'devise'
@@ -63,7 +65,7 @@ group :test do
   gem 'capybara', github: 'jnicklas/capybara', branch: '2.2_stable'
   # gem "nyan-cat-formatter"
   gem 'database_cleaner'
-  gem 'shoulda-matchers'
+  gem 'shoulda-matchers', require: false
   gem 'timecop'
   gem 'webmock'
 end

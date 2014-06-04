@@ -1,6 +1,10 @@
 # The base controller for API v1
 class ApiController < ApplicationController
   include TokenAuthentication
+  extend Memoist
+
+  # Turn CSRF Off
+  skip_before_filter :verify_authenticity_token
 
   # Errors
   rescue_from Errors::Unauthorized, with: :unauthorized
