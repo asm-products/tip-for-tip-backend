@@ -86,10 +86,11 @@ ActiveRecord::Schema.define(version: 20140603071712) do
   create_table "purchases", force: true do |t|
     t.string   "service"
     t.text     "receipt_data"
+    t.text     "encoded_receipt_data"
     t.string   "transaction_id"
     t.datetime "transaction_timestamp"
-    t.integer  "transaction_value"
-    t.string   "transaction_currency"
+    t.boolean  "verified"
+    t.string   "unverified_reason"
     t.integer  "tip_id"
     t.integer  "user_id"
     t.datetime "created_at"

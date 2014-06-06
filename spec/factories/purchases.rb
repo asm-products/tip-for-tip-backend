@@ -8,12 +8,16 @@ FactoryGirl.define do
       service "google"
     end
 
+    trait :verified do
+      verified true
+    end
+
     itunes
-    receipt_data "encrypted receipt data"
     sequence :transaction_id
     transaction_timestamp 1.minute.ago
-    transaction_value 99
-    transaction_currency 'USD'
+    encoded_receipt_data "encoded receipt data"
+    receipt_data { ::Support::ItunesReceipts.parsed }
+    verified false
 
     user
     tip

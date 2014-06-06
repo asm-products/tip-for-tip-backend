@@ -3,10 +3,11 @@ class CreatePurchases < ActiveRecord::Migration
     create_table :purchases do |t|
       t.string   :service
       t.text     :receipt_data
+      t.text     :encoded_receipt_data
       t.string   :transaction_id
       t.datetime :transaction_timestamp
-      t.integer  :transaction_value
-      t.string   :transaction_currency
+      t.boolean  :verified
+      t.string   :unverified_reason
 
       t.references :tip
       t.references :user

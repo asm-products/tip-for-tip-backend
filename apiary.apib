@@ -130,7 +130,7 @@ Examples:
         If a noun id was provided but was not found.
 
 
-## POST /tips/{tip_id}/purchase/itunes
+## POST /tips/{tip_id}/purchases/itunes
 
 Purchase a tip for the current user. Expects that the purchase itself has already taken place
 on the iTunes IAP service. Transaction data from that service should be provided to this endpoint
@@ -138,12 +138,14 @@ where it will be verified with the service and recorded as a purchase of the tip
 This endpoint is service specific to allow each service to use its different parameter footprint
 and response values, depending on the needs and provisions of that service.
 
-Transaction values must be sent in cent values.
-
 The response body of a successful request provides the details fo the created purchase resource as
 well as the same details of the tip resource that are returned by the `GET /tips/{tip_id}` request.
 
-TODO: should we remove the "transaction_" from the request params?
+The receipt data contains a number of additional attributes that are saved to the purchase record.
+iTunes receipt format information can be found at
+
+- [https://developer.apple.com/library/ios/releasenotes/General/ValidateAppStoreReceipt/Chapters/ValidateRemotely.html#//apple_ref/doc/uid/TP40010573-CH104-SW1](https://developer.apple.com/library/ios/releasenotes/General/ValidateAppStoreReceipt/Chapters/ValidateRemotely.html#//apple_ref/doc/uid/TP40010573-CH104-SW1)
+- [https://developer.apple.com/library/ios/releasenotes/General/ValidateAppStoreReceipt/Chapters/ReceiptFields.html#//apple_ref/doc/uid/TP40010573-CH106-SW3](https://developer.apple.com/library/ios/releasenotes/General/ValidateAppStoreReceipt/Chapters/ReceiptFields.html#//apple_ref/doc/uid/TP40010573-CH106-SW3)
 
 + Parameters
 
@@ -153,10 +155,7 @@ TODO: should we remove the "transaction_" from the request params?
 
         {
             receipt_data: "<encrypted receipt data>=",
-            transaction_id: 'abc123',
-            transaction_value: 99,
-            transaction_currency: 'USD',
-            transaction_timestamp: '2014-05-25T16:45:49Z'
+            transaction_id: 'abc123'
         }
 
 + Response 201 (application/json)
@@ -190,6 +189,8 @@ Transaction values must be sent in cent values.
 
 The response body of a successful request provides the details fo the created purchase resource as
 well as the same details of the tip resource that are returned by the `GET /tips/{tip_id}` request.
+
+The receipt data contains a number of additional attributes that are saved to the purchase record.
 
 TODO: should we remove the "transaction_" from the request params?
 

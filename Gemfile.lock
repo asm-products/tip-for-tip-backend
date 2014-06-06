@@ -1,4 +1,13 @@
 GIT
+  remote: git://github.com/amoslanka/venice.git
+  revision: 8ed8a7d6f7018547f983c79a857f1d43b99f5d16
+  specs:
+    venice (0.2.0)
+      commander (~> 4.1)
+      json
+      terminal-table (~> 1.4)
+
+GIT
   remote: git://github.com/jnicklas/capybara.git
   revision: 93461068c3e50b47f80e4f125a7882643a9dc0b2
   branch: 2.2_stable
@@ -49,6 +58,8 @@ GEM
       debug_inspector (>= 0.0.1)
     builder (3.2.2)
     coderay (1.1.0)
+    commander (4.2.0)
+      highline (~> 1.6.11)
     crack (0.4.2)
       safe_yaml (~> 1.0.0)
     database_cleaner (1.2.0)
@@ -81,6 +92,7 @@ GEM
       faraday_middleware (>= 0.8)
       hashie (>= 1.0, < 3.0.0)
     hashie (2.1.1)
+    highline (1.6.21)
     hike (1.2.3)
     i18n (0.6.9)
     jbuilder (2.0.7)
@@ -203,6 +215,7 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (~> 2.8)
+    terminal-table (1.4.5)
     thor (0.19.1)
     thread_safe (0.3.3)
     tilt (1.4.1)
@@ -259,4 +272,5 @@ DEPENDENCIES
   spring
   timecop
   unicorn
+  venice!
   webmock

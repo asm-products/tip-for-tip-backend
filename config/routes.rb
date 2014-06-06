@@ -3,7 +3,7 @@ require 'api_constraints'
 Rails.application.routes.draw do
 
   namespace :api do
-  get 'purchases/create'
+    get 'purchases/create'
   end
 
   devise_for :users, controllers: { omniauth_callbacks: 'auth' }, path: ''

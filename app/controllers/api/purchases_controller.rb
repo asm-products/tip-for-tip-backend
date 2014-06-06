@@ -3,7 +3,14 @@ class Api::PurchasesController < ApiController
 
   def create
     @tip = find_tip
-    @purchase = PurchaseCreator.new.(current_user, @tip, purchase_params.except(:tip_id))
+    @purchase = case params[:service].to_sym
+    when :itunes
+      ItunesPurchaseCreator.new.(current_user, @tip, params[:transaction_id], params[:receipt_data])
+    when :google
+      raise NotYetImplementedError
+    end
+
+
     render status: 201
   end
 
@@ -17,7 +24,7 @@ class Api::PurchasesController < ApiController
   end
 
   def purchase_params
-    keys = %w{ tip_id service receipt_data transaction_id transaction_value transaction_currency transaction_timestamp }
+    keys = %w{ tip_id service receipt_data transaction_id }
     keys.each{ |key| params.require key }
     params.permit *keys
   end

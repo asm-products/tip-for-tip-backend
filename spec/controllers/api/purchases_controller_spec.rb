@@ -1,6 +1,8 @@
 require 'spec_helper.rb'
 
 describe Api::PurchasesController do
+  include Support::ItunesReceipts::VerificationMock
+
   before { accept_json }
   let!(:user) { user = stub_token_authentication }
 
@@ -12,13 +14,14 @@ describe Api::PurchasesController do
       {
         receipt_data: "encrypted receipt data",
         transaction_id: '1',
-        transaction_value: '99',
-        transaction_currency: 'USD',
         transaction_timestamp: 10.minutes.ago.to_time.iso8601,
         # url params
         tip_id: tip.id,
         service: :itunes
       }
+    end
+    before do
+      stub_successful_itunes_receipt_verification
     end
 
     # Auth

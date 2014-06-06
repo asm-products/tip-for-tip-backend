@@ -13,7 +13,7 @@ Rails.application.routes.default_url_options[:host] = 'local.tipfortip.com'
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
-
+ActiveRecord::Migration.maintain_test_schema!
 
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
