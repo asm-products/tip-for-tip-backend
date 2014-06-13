@@ -17,4 +17,6 @@ json.perks_count @place.perks.count
 # json.array! @place.perks, partial: 'perks', as: :perk
 
 json.tips_count @place.tips.count
-# json.partial! 'tips', tips: @place.tips
+json.tips do
+  json.partial! 'api/tips/tip', collection: @place.tips, as: :tip
+end
