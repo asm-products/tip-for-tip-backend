@@ -21,7 +21,10 @@ Rails.application.routes.draw do
       get '/places/foursquare/:foursquare_id', to: 'places#foursquare_show', as: :foursquare_place
       get '/places/:place_id', to: 'places#show', as: :place
 
+
     end
+
+    resource :tips, path: '/:noun_type/:noun_id/tips', only: :create
 
     get  '/tips/:tip_id' => 'tips#show', as: :tip
     post '/tips/:tip_id/purchase/:service' => 'purchases#create', as: :purchase_tip

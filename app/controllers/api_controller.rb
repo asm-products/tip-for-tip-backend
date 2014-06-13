@@ -14,12 +14,12 @@ class ApiController < ApplicationController
 
   protected
 
-  def unauthorized
+  def unauthorized e=nil
     # TODO: better response error message
     render status: :unauthorized, json: { error: :unauthorized}
   end
 
-  def not_found
+  def not_found e=nil
     # TODO: better response error message
     render status: :not_found, json: { error: :not_found }
   end

@@ -17,7 +17,7 @@ module Uuid
   # Public: generates a uuid for the instance if it doesn't
   # already have one.
   def generate_uuid
-    self.uuid ||= SecureRandom.hex(16)
+    self.uuid ||= SecureRandom.urlsafe_base64(16)
   end
 
   # Public: generates a uuid on the instance and saves it.
@@ -28,7 +28,7 @@ module Uuid
 
   # Public: Forces creation of a new uuid on the instance.
   def regenerate_uuid!
-    self.uuid = SecureRandom.hex(16)
+    self.uuid = SecureRandom.urlsafe_base64(16)
     save!
   end
 

@@ -18,9 +18,7 @@ class Api::PurchasesController < ApiController
 
   def find_tip
     id = purchase_params[:tip_id]
-    tip = ::Tip.where('id = ? OR uuid = ?', id, id).first
-    raise ActiveRecord::RecordNotFound.new(purchase_params[:tip_id]) unless tip
-    tip
+    ::Tip.where('id = ? OR uuid = ?', id, id).first!
   end
 
   def purchase_params
@@ -29,6 +27,5 @@ class Api::PurchasesController < ApiController
     params.permit *keys
   end
   memoize :purchase_params
-
 
 end

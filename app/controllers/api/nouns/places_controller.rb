@@ -6,8 +6,7 @@ class Api::Nouns::PlacesController < ApiController
 
   def show
     id = show_params[:place_id]
-    @place = ::Nouns::Place.where('id = ? OR uuid = ?', id, id).first
-    raise ActiveRecord::RecordNotFound.new(show_params[:place_id]) unless @place
+    @place = ::Nouns::Place.where('id = ? OR uuid = ?', id, id).first!
   end
 
   def foursquare_show
