@@ -10,12 +10,7 @@ class Api::TipsController < ApiController
 
   def create
     @noun = find_noun
-
-    @tip = Tip.new create_tip_params
-    @tip.user = current_user
-    @tip.noun = @noun
-    @tip.save!
-
+    @tip = TipCreator.new.(create_tip_params.to_hash.merge user: current_user, noun: @noun)
     render :show, status: :created
   end
 
@@ -43,9 +38,13 @@ class Api::TipsController < ApiController
   memoize :find_noun_params
 
   def find_noun
-    clazz = "nouns/#{find_noun_params[:noun_type].underscore}".classify.constantize
-    id = find_noun_params[:noun_id]
-    clazz.where('id = ? OR uuid = ?', id, id).first!
+    begin
+      clazz = "nouns/#{find_noun_params[:noun_type].underscore}".classify.constantize
+      id = find_noun_params[:noun_id]
+      clazz.where('id = ? OR uuid = ?', id, id).first!
+    rescue NameError => e
+      raise ActiveRecord::RecordNotFound, find_noun_params[:noun_type]
+    end
   end
 
 end
