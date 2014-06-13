@@ -11,11 +11,6 @@ class Api::TipsController < ApiController
   def create
     @noun = find_noun
 
-    # (TODO)
-    unless @noun
-      render status: 404, json: { message: "Automatic creation of nouns is not yet implemented." }
-    end
-
     @tip = Tip.new create_tip_params
     @tip.user = current_user
     @tip.noun = @noun
