@@ -29,5 +29,6 @@ notifications:
     - amos@tipfortip.com
     - kirk@tipfortip.com
     - begin@tipfortip.com
+    - rob@tipfortip.com
   on_success: change
   on_failure: always
