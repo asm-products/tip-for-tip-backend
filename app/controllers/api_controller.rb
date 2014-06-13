@@ -7,12 +7,11 @@ class ApiController < ApplicationController
   skip_before_filter :verify_authenticity_token
 
   # Errors
-  rescue_from Errors::Unauthorized, with: :unauthorized
-  rescue_from ActiveRecord::RecordNotFound, with: :not_found
+  rescue_from Exception, with: :server_error # Catchall
   # rescue_from ActionController::ParameterMissing #TODO: strong params rescue
   # rescue_from ActiveRecord::RecordInvalid #TODO 422 responses
-  # Catches all remaining errors
-  rescue_from Exception, with: :server_error
+  rescue_from ActiveRecord::RecordNotFound, with: :not_found
+  rescue_from Errors::Unauthorized, with: :unauthorized
 
   protected
 
