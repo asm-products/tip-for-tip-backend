@@ -83,26 +83,65 @@ View the details of an individual tip.
 
 - Requires a current user
 
++ Response 200
+        {
+            id: 1,
+            uuid: "45673e9a26145957a0cdbf470f1e0700",
+            subject: "Tempora vitae aspernatur nam quidem recusandae ratione possimus.",
+            body: "Aut similique recusandae sequi dolor possimus. Lorem ipsem...",
+            is_annonymous: false,
+            can_purchase_with_reputation: false,
+            created_at: "2014-06-13T00:00:26.000-07:00",
+            updated_at: "2014-06-13T00:00:26.000-07:00",
+            user: {
+                id: 2,
+                uuid: "f4773e96b76df671fbe90f7c48db5640",
+                username: "BruceChelmsforde7a8da84",
+                first_name: "Bruce",
+                last_name: "Chelmsford",
+                created_at: "2014-06-13T00:00:26.000-07:00",
+                updated_at: "2014-06-13T00:00:26.000-07:00"
+            },
+            noun: {
+                id: 1,
+                uuid: "294bec143ab73b6822aeb5ebe2ac05e7",
+                created_at: "2014-06-13T00:00:26.000-07:00",
+                updated_at: "2014-06-13T00:00:26.000-07:00",
+                type: "nouns/place"
+            }
+        }
 
++ Response 401 (application/json)
+
+        If a valid authentication token or other method is not provided with the request.
+
++ Response 404 (application/json)
+
+        If the tip was not found.
 
 ## POST /:noun_type/:noun_id?/tips
 
 - Requires a current user
 
-Amos, FYI: https://github.com/apiaryio/api-blueprint/issues/86
+Create a tip for a noun.
 
-Create a tip for a noun. If a noun id is provided, the noun will be looked up, but otherwise one will be created. The current user will be assigned as the tipper. If the noun has not yet had a tip, the user will be set as the first tipper.
+(not yet implemented) <strike>If a noun id is provided, the noun will be looked up, but otherwise one will be created. The current user will be assigned as the tipper. If the noun has not yet had a tip, the user will be set as the first tipper.</strike>
+
+A successful response will return the same data as the `GET tips/:tip_id` request.
 
 Examples:
 
-- `POST places/tips` - Creates a place and a tip based on the provided params.
+- <strike>`POST places/tips` - Creates a place and a tip based on the provided params.</strike>
 - `POST places/123-abc/tips` - Finds the place with the id `123-abc` and creates a tip based on the provided params.
-- `POST things/tips` - Creates a thing and a tip based on the provided params.
+- <strike>`POST things/tips` - Creates a thing and a tip based on the provided params.</strike>
 
 + Parameters
 
     + noun_type (string)               ... The type of noun the created tip will be created for. May be one of the available noun types.
-    + noun_id   (optional, string)     ... The id of the noun to create the tip for. This parameter is optional. If left out, the other provided noun attributes will be used to find or create the noun.
+    + noun_id   (string)               ... The id of the noun to create the tip for. This parameter is optional. If left out, the other provided noun attributes will be used to find or create the noun.
+    + subject (string)                 ... The tip subject line. A summary of the tip being given.
+    + body (string)                    ... The body of the tip.
+    + send_at (optional, timestamp)    ... The time at which the tip should be sent. If ommitted or null, the tip will be sent immediately.
     + is_anonymous (optional, boolean) ... If true, the tip will be displayed without revealing the identity of the tipper. Default: false
     + can_purchase_with_reputation (optional, boolean) ... If true, the readers of the tip can purchase it using reputation points. Default: false
 
@@ -110,24 +149,50 @@ Examples:
 
         {
             noun_type: "place",
+            noun_id: 1,
+            subject: "Tempora vitae aspernatur nam quidem recusandae ratione possimus.",
+            body: "Aut similique recusandae sequi dolor possimus. Lorem ipsem...",
             is_anonymous: false,
-            can_purchase_with_reputation: true
+            can_purchase_with_reputation: false,
+            send_at: null
         }
 
 + Response 201 (application/json)
 
         {
-            "id": "1163ef90-cddf-11e3-9f6d-85ee8d939f6f",
-            "noun_id": "012052b12982-1762fe10-ce3c-11e3-88f1"
+            id: 1,
+            uuid: "45673e9a26145957a0cdbf470f1e0700",
+            subject: "Tempora vitae aspernatur nam quidem recusandae ratione possimus.",
+            body: "Aut similique recusandae sequi dolor possimus. Lorem ipsem...",
+            is_annonymous: false,
+            can_purchase_with_reputation: false,
+            created_at: "2014-06-13T00:00:26.000-07:00",
+            updated_at: "2014-06-13T00:00:26.000-07:00",
+            user: {
+                id: 2,
+                uuid: "f4773e96b76df671fbe90f7c48db5640",
+                username: "BruceChelmsforde7a8da84",
+                first_name: "Bruce",
+                last_name: "Chelmsford",
+                created_at: "2014-06-13T00:00:26.000-07:00",
+                updated_at: "2014-06-13T00:00:26.000-07:00"
+            },
+            noun: {
+                id: 1,
+                uuid: "294bec143ab73b6822aeb5ebe2ac05e7",
+                created_at: "2014-06-13T00:00:26.000-07:00",
+                updated_at: "2014-06-13T00:00:26.000-07:00",
+                type: "nouns/place"
+            }
         }
 
 + Response 401 (application/json)
 
-        If there is no currently authenticated user.
+        If a valid authentication token or other method is not provided with the request.
 
 + Response 404 (application/json)
 
-        If a noun id was provided but was not found.
+        If the noun was not found.
 
 
 ## POST /tips/{tip_id}/purchases/itunes
@@ -171,7 +236,7 @@ iTunes receipt format information can be found at
 
 + Response 401 (application/json)
 
-        If there is no currently authenticated user.
+        If a valid authentication token or other method is not provided with the request.
 
 + Response 404 (application/json)
 
@@ -223,7 +288,7 @@ TODO
 
 + Response 401 (application/json)
 
-        If there is no currently authenticated user.
+        If a valid authentication token or other method is not provided with the request.
 
 + Response 404 (application/json)
 
