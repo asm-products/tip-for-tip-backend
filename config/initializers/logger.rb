@@ -1,3 +1,4 @@
+$stdout.sync = true unless Rails.env.production?
 Rails.logger = Logger.new(STDOUT) unless Rails.env.test?
 
 # TODO: log tagggggs
