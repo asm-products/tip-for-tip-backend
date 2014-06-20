@@ -1,4 +1,4 @@
-Rails.logger = Logger.new(STDOUT)
+Rails.logger = Logger.new(STDOUT) unless Rails.env.test?
 
 # TODO: log tagggggs
 # - subdomain
