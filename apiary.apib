@@ -22,7 +22,7 @@ In the end, a user is redirected back to `/profile` unless a `redirectTo` param 
 - If the user has an account by email but has not yet used this provider for authentication, TODO
 - If a `redirectTo` param is provided, successful authentication redirects to this url.
 
-+ Response 304
++ Response 302
 
 
 ## GET /auth/logout
@@ -80,6 +80,9 @@ Retrieve the current user's user, identity, and profile data.
 ## GET /tips/{tip_id}
 
 View the details of an individual tip.
+
++ Parameters
+    + tip_id (string) ... Id or uuid of the tip
 
 - Requires a current user
 
