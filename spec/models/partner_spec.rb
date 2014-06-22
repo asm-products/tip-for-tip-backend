@@ -1,5 +1,9 @@
 require 'spec_helper'
 
 describe Partner do
-  pending "add some examples to (or delete) #{__FILE__}"
+
+  it { expect(FactoryGirl.build :partner).to be_valid }
+
+  it { should validate_presence_of :primary_user }
+
 end

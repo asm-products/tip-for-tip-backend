@@ -1,5 +1,10 @@
 require 'spec_helper'
 
 describe Perk do
-  pending "add some examples to (or delete) #{__FILE__}"
+
+  it { expect(FactoryGirl.build :perk).to be_valid }
+  it { should generate_a_uuid }
+  it { should validate_presence_of :title }
+  it { should validate_presence_of :subscription }
+
 end

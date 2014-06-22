@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Tip do
   it { expect(FactoryGirl.build :tip).to be_valid }
-
+  it { should generate_a_uuid }
 
   describe 'the `can_purchase_with_reputation` attribute' do
     it 'defaults to false' do

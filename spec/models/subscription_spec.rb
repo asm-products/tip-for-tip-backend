@@ -1,5 +1,9 @@
 require 'spec_helper'
 
 describe Subscription do
-  pending "add some examples to (or delete) #{__FILE__}"
+
+  it { expect(FactoryGirl.build :subscription).to be_valid }
+  it { should validate_presence_of :noun }
+  it { should validate_presence_of :partner }
+
 end

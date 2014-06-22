@@ -2,6 +2,7 @@ require 'spec_helper.rb'
 
 describe Purchase do
   let(:verified_purchase) { FactoryGirl.build :purchase, :verified }
+  it { expect(FactoryGirl.build :purchase).to be_valid }
 
   it { should validate_presence_of :user }
   it { should validate_presence_of :tip }
