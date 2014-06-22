@@ -15,7 +15,7 @@ class Tip < ActiveRecord::Base
     self.sent = false if self.sent.blank?
     self.send_at ||= Time.zone.now
     self.is_anonymous = false if self.is_anonymous.blank?
-    self.is_anonymous = false if self.is_anonymous.blank?
+    self.can_purchase_with_reputation = false if self.can_purchase_with_reputation.blank?
   end
 
 end
