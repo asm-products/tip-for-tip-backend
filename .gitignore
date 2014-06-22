@@ -26,3 +26,5 @@ config/initializers/secret_token.rb
 .rvmrc
 .foreman
 
+node_modules
+
