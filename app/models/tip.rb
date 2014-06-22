@@ -14,7 +14,8 @@ class Tip < ActiveRecord::Base
   def after_initialize
     self.sent = false if self.sent.blank?
     self.send_at ||= Time.zone.now
-    self.is_annonymous = false if self.is_annonymous.blank?
+    self.is_anonymous = false if self.is_anonymous.blank?
+    self.is_anonymous = false if self.is_anonymous.blank?
   end
 
 end

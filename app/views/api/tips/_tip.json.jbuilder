@@ -8,7 +8,7 @@ json.(
   # TODO: noun
   # TODO: user
 
-  :is_annonymous,
+  :is_anonymous,
   :can_purchase_with_reputation,
 
   # TODO: MORE TIP DATA

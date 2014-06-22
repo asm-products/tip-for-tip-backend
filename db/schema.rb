@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140603071712) do
+ActiveRecord::Schema.define(version: 20140622023546) do
 
   create_table "identities", force: true do |t|
     t.integer  "user_id"
@@ -120,7 +120,7 @@ ActiveRecord::Schema.define(version: 20140603071712) do
     t.integer  "user_id"
     t.integer  "noun_id"
     t.string   "noun_type"
-    t.boolean  "is_annonymous"
+    t.boolean  "is_anonymous"
     t.boolean  "can_purchase_with_reputation"
     t.boolean  "sent"
     t.datetime "send_at"

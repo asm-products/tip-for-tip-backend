@@ -1,7 +1,7 @@
 class Api::TipsController < ApiController
   before_filter :authenticate_user_from_token!
 
-  rescue_from NameError, with: :not_found, only: :create
+  # rescue_from NameError, with: :not_found, only: :create
 
   def show
     id = show_params[:tip_id]
@@ -24,7 +24,7 @@ class Api::TipsController < ApiController
 
   def create_tip_params
     required_params = %w{ subject body }
-    optional_params = %w{ is_annonymous can_purchase_with_reputation send_at }
+    optional_params = %w{ is_anonymous can_purchase_with_reputation send_at }
     required_params.each{ |p| params.require p }
     params.permit required_params + optional_params
   end
