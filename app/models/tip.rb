@@ -11,11 +11,12 @@ class Tip < ActiveRecord::Base
   validates_presence_of :user
   validates_presence_of :noun
 
-  def after_initialize
+  before_validation do
     self.sent = false if self.sent.blank?
     self.send_at ||= Time.zone.now
     self.is_anonymous = false if self.is_anonymous.blank?
     self.can_purchase_with_reputation = false if self.can_purchase_with_reputation.blank?
+    true
   end
 
 end
