@@ -11,11 +11,8 @@ class Identity < ActiveRecord::Base
   after_find :clear_expired_token
 
   # Scopes
-  scope :with_expired_token, -> { where("token_expires_at <= Now() OR token_expires_at IS NULL") }
-  scope :with_unexpired_token, -> { where("token_expires_at >= Now()") }
-
-
-
+  scope :with_expired_token, -> { where("token_expires_at <= ? OR token_expires_at IS NULL", Time.zone.now) }
+  scope :with_unexpired_token, -> { where("token_expires_at >= ?", Time.zone.now) }
 
   private
 
@@ -24,7 +21,7 @@ class Identity < ActiveRecord::Base
   def clear_expired_token
     if self.token.present? &&
       (Time.zone.now > self.token_expires_at || self.token_expires_at.blank?)
-      update_attributes token: nil
+      update_attributes! token: nil
     end
   end
 

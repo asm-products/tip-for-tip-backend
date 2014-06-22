@@ -16,6 +16,7 @@ FactoryGirl.define do
     uid { SecureRandom.hex(4) }
     token { SecureRandom.hex(4) }
     token_expires_at 1.week.from_now
+    user
   end
 
   factory :facebook_identity do
