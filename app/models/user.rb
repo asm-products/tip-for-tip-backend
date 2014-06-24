@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
   belongs_to :partner
   has_many :tips
   has_many :purchases
+  has_many :iap_receipt_verifications
   has_many :purchased_tips, through: :purchases, source: :tip, inverse_of: :purchasers
 
   # Include default devise modules. Others available are:

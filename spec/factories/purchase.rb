@@ -15,15 +15,10 @@ FactoryGirl.define do
     itunes
     sequence :transaction_id
     transaction_timestamp 1.minute.ago
-    encoded_receipt_data "encoded receipt data"
-    receipt_data { ::Support::ItunesReceipts.parsed }
-    verified false
 
     user
     tip
-  end
+    iap_receipt_verification
 
-  factory :google do
-    google
   end
 end

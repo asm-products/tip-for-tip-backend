@@ -9,7 +9,8 @@ module Support
       receipt.to_hash.with_indifferent_access
     end
 
-    def self.response
+    def self.response transaction_id=nil
+      transaction_id ||= default_transaction_id
       {
         "status"=>0,
         "environment"=>"Production",
@@ -29,7 +30,7 @@ module Support
           "in_app"=>[{
             "quantity"=>"1",
             "product_id"=>"com.foo.product",
-            "transaction_id"=>"5555",
+            "transaction_id"=>transaction_id,
             "original_transaction_id"=>"4444",
             "purchase_date"=>"2014-05-28 14:47:53 Etc/GMT",
             "purchase_date_ms"=>"1401288473000",
@@ -47,9 +48,26 @@ module Support
       response[:receipt]
     end
 
+    def self.default_transaction_id
+      @default_transaction_id || 555
+    end
+
+    def self.default_transaction_id=(val)
+      @default_transaction_id = val
+    end
+
     module VerificationMock
       def stub_successful_itunes_receipt_verification
         allow_any_instance_of(Venice::Client).to receive(:verify!).and_return Support::ItunesReceipts.receipt
+      end
+
+      def stub_unsuccessful_itunes_receipt_verification
+        error = Venice::Receipt::VerificationError.new(555555, nil)
+        allow_any_instance_of(Venice::Client).to receive(:verify!).and_raise error
+      end
+
+      def itunes_transaction_id
+        Support::ItunesReceipts.default_transaction_id
       end
     end
 

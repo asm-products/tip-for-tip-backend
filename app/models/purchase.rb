@@ -1,29 +1,28 @@
 class Purchase < ActiveRecord::Base
-  SERVICES = %w(itunes)
+  SERVICES = %w(itunes google)
 
   belongs_to :user
   belongs_to :tip
+  belongs_to :iap_receipt_verification
 
   validates_presence_of :user
   validates_presence_of :tip
   validates_presence_of :service
-  validates_presence_of :receipt_data, if: :verified
-  validates_presence_of :encoded_receipt_data
+  validates_inclusion_of :service, in: SERVICES, allow_blank: true
   validates_presence_of :transaction_id
-  validates :service, inclusion: { in: SERVICES }
+  validates_uniqueness_of :transaction_id, scope: :service, allow_blank: true
 
-  # Validating uniqueness of transaction id protects us from a hacker
-  # using the same valid receipt to purchase multiple tips.
-  validates_uniqueness_of :transaction_id, scope: :verified, if: :verified
+  validates_presence_of :iap_receipt_verification
+  validates_each :iap_receipt_verification, allow_blank: true do |record, attr, value|
+    record.errors.add attr, 'must be valid.' unless value.valid?
+    record.errors.add attr, 'must be successful.' unless value.successful?
+  end
+
 
   SERVICES.each do |service_name|
     define_method "#{service_name}?" do
       self.service.to_s == service_name.to_s
     end
-  end
-
-  after_initialize do
-    self.verified = false if self.verified.nil?
   end
 
   before_validation do

@@ -11,7 +11,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140622023546) do
+ActiveRecord::Schema.define(version: 20140624042627) do
+
+  create_table "iap_receipt_verifications", force: true do |t|
+    t.integer  "user_id"
+    t.boolean  "successful"
+    t.string   "transaction_id"
+    t.string   "result"
+    t.string   "result_message"
+    t.string   "service"
+    t.text     "encoded_receipt_data"
+    t.text     "receipt_data"
+    t.text     "request_metadata"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "iap_receipt_verifications", ["result"], name: "index_iap_receipt_verifications_on_result", using: :btree
+  add_index "iap_receipt_verifications", ["result_message"], name: "index_iap_receipt_verifications_on_result_message", using: :btree
+  add_index "iap_receipt_verifications", ["successful"], name: "index_iap_receipt_verifications_on_successful", using: :btree
+  add_index "iap_receipt_verifications", ["transaction_id"], name: "index_iap_receipt_verifications_on_transaction_id", using: :btree
+  add_index "iap_receipt_verifications", ["user_id"], name: "index_iap_receipt_verifications_on_user_id", using: :btree
 
   create_table "identities", force: true do |t|
     t.integer  "user_id"
@@ -85,16 +105,13 @@ ActiveRecord::Schema.define(version: 20140622023546) do
 
   create_table "purchases", force: true do |t|
     t.string   "service"
-    t.text     "receipt_data"
-    t.text     "encoded_receipt_data"
     t.string   "transaction_id"
     t.datetime "transaction_timestamp"
-    t.boolean  "verified"
-    t.string   "unverified_reason"
     t.integer  "tip_id"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "iap_receipt_verification_id"
   end
 
   add_index "purchases", ["service"], name: "index_purchases_on_service", using: :btree
@@ -114,15 +131,15 @@ ActiveRecord::Schema.define(version: 20140622023546) do
   add_index "subscriptions", ["partner_id"], name: "index_subscriptions_on_partner_id", using: :btree
 
   create_table "tips", force: true do |t|
-    t.string   "uuid",                         limit: 36, null: false
-    t.string   "subject",                                 null: false
-    t.text     "body",                                    null: false
+    t.string   "uuid",                         limit: 36,                 null: false
+    t.string   "subject",                                                 null: false
+    t.text     "body",                                                    null: false
     t.integer  "user_id"
     t.integer  "noun_id"
     t.string   "noun_type"
-    t.boolean  "is_anonymous"
-    t.boolean  "can_purchase_with_reputation"
-    t.boolean  "sent"
+    t.boolean  "is_anonymous",                            default: false
+    t.boolean  "can_purchase_with_reputation",            default: false
+    t.boolean  "sent",                                    default: false
     t.datetime "send_at"
     t.datetime "created_at"
     t.datetime "updated_at"
