@@ -32,7 +32,7 @@ class AuthController < Devise::OmniauthCallbacksController
     omniauth_params = request.env["omniauth.params"].with_indifferent_access
     redirect_to_url = omniauth_params[:redirect_to] unless omniauth_params[:redirect_to].blank?
     uri = URI.parse(redirect_to_url || profile_path)
-    uri.query = "#{uri.query}&token=#{token}"
+    uri.query = [uri.query, "token=#{token}"].join '&'
     uri.to_s
   end
 
