@@ -4,9 +4,11 @@ class ItunesPurchaseCreator
 
   def call(user, tip, transaction_id, encoded_receipt_data, options={})
     options.symbolize_keys!
+    transaction_id = transaction_id.to_s
 
     verification = IapReceiptVerification.new service: :itunes,
                                               user: user,
+                                              successful: false,
                                               transaction_id: transaction_id,
                                               encoded_receipt_data: encoded_receipt_data,
                                               request_metadata: options[:request_metadata]
@@ -16,7 +18,7 @@ class ItunesPurchaseCreator
       verification.receipt_data = Venice::Receipt.verify!(encoded_receipt_data).to_hash
 
       # Make sure the transaction id is in the decoded receipt data
-      unless verification.receipt_data[:in_app].any?{ |r| r[:transaction_id] == transaction_id }
+      unless verification.receipt_data[:in_app].any?{ |r| r.symbolize_keys[:transaction_id].to_s == transaction_id }
         error = Errors::ReceiptVerification.new "The transaction id (#{transaction_id}) is not in the list of transactions in the receipt data.",
           transaction_id, verification.receipt_data
         raise error

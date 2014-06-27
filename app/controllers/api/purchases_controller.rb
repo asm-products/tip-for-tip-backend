@@ -13,7 +13,6 @@ class Api::PurchasesController < ApiController
 
     @tip = find_tip
     @purchase = case params[:service].to_sym
-
     when :itunes
       ItunesPurchaseCreator.new.(current_user, @tip, params[:transaction_id], params[:receipt_data], request_metadata: request_metadata)
     when :google
