@@ -92,8 +92,10 @@ View the details of an individual tip.
             uuid: "45673e9a26145957a0cdbf470f1e0700",
             subject: "Tempora vitae aspernatur nam quidem recusandae ratione possimus.",
             body: "Aut similique recusandae sequi dolor possimus. Lorem ipsem...",
-            is_anonymous: false,
-            can_purchase_with_reputation: false,
+            display_as: false,
+            is_free: false
+            is_compliment: false,
+            send_at: "2014-06-14T00:00:26.000-07:00",
             created_at: "2014-06-13T00:00:26.000-07:00",
             updated_at: "2014-06-13T00:00:26.000-07:00",
             user: {
@@ -140,13 +142,15 @@ Examples:
 
 + Parameters
 
-    + noun_type (string)               ... The type of noun the created tip will be created for. May be one of the available noun types.
-    + noun_id   (string)               ... The id of the noun to create the tip for. This parameter is optional. If left out, the other provided noun attributes will be used to find or create the noun.
-    + subject (string)                 ... The tip subject line. A summary of the tip being given.
-    + body (string)                    ... The body of the tip.
-    + send_at (optional, timestamp)    ... The time at which the tip should be sent. If ommitted or null, the tip will be sent immediately.
-    + is_anonymous (optional, boolean) ... If true, the tip will be displayed without revealing the identity of the tipper. Default: false
-    + can_purchase_with_reputation (optional, boolean) ... If true, the readers of the tip can purchase it using reputation points. Default: false
+    + noun_type (string)                ... The type of noun the created tip will be created for. May be one of the available noun types.
+    + noun_id   (string)                ... The id of the noun to create the tip for. This parameter is optional. If left out, the other provided noun attributes will be used to find or create the noun.
+    + subject (string)                  ... The tip subject line. A summary of the tip being given.
+    + body (string)                     ... The body of the tip.
+    + send_at (optional, timestamp or string) ... The time or named timeframe at which the tip should be sent. If the value is a parseable timestamp, it will be treated as an exact time to send the tip. Otherwise the value is expected to be one of a few available named timeframes: 'today', 'tomorrow', 'later this week', 'in a few weeks'. These strings are case insensitive but must be otherwise matched letter for letter. Randomness will be used to create a send_at time with from these values, so for example, 'tomorrow' will not create a send_at time that is precisely 24 hours from now. If ommitted or null, the tip will be sent immediately.
+
+    + is_compliment (optional, boolean) ... A compliment tip does not require purchasing, but rather, is meant to add positivity in the app. Default: false
+    + is_free (optional, boolean)       ... A "free tip" is a tip that can be purchased using reputation points. Default: false
+    + display_as (optional, string)     ... How the tip submitter would like their identity displayed. Possible options: first_name, full_name, anonymous. Default: full_name
 
 + Request (application/json)
 
@@ -155,9 +159,10 @@ Examples:
             noun_id: 1,
             subject: "Tempora vitae aspernatur nam quidem recusandae ratione possimus.",
             body: "Aut similique recusandae sequi dolor possimus. Lorem ipsem...",
-            is_anonymous: false,
-            can_purchase_with_reputation: false,
-            send_at: null
+            is_compliment: false,
+            is_free: false,
+            display_as: "anonymous",
+            send_at: "tomorrow"
         }
 
 + Response 201 (application/json)
@@ -167,8 +172,10 @@ Examples:
             uuid: "45673e9a26145957a0cdbf470f1e0700",
             subject: "Tempora vitae aspernatur nam quidem recusandae ratione possimus.",
             body: "Aut similique recusandae sequi dolor possimus. Lorem ipsem...",
-            is_anonymous: false,
-            can_purchase_with_reputation: false,
+            display_as: false,
+            is_free: false
+            is_compliment: false,
+            send_at: "2014-06-14T00:00:26.000-07:00",
             created_at: "2014-06-13T00:00:26.000-07:00",
             updated_at: "2014-06-13T00:00:26.000-07:00",
             user: {
