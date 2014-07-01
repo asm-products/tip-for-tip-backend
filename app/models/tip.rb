@@ -1,5 +1,6 @@
 class Tip < ActiveRecord::Base
   include Uuid
+  DISPLAY_AS_OPTIONS = %w{first_name full_name anonymous}
 
   belongs_to :user
   belongs_to :noun, polymorphic: true
@@ -10,12 +11,15 @@ class Tip < ActiveRecord::Base
   validates_presence_of :body
   validates_presence_of :user
   validates_presence_of :noun
+  validates_inclusion_of :display_as, in: DISPLAY_AS_OPTIONS
 
   before_validation do
     self.sent = false if self.sent.blank?
     self.send_at ||= Time.zone.now
-    self.is_anonymous = false if self.is_anonymous.blank?
-    self.can_purchase_with_reputation = false if self.can_purchase_with_reputation.blank?
+    self.display_as = :full_name if self.display_as.blank?
+    self.display_as = self.display_as.to_s.downcase.strip
+    self.is_free = false if self.is_free.blank?
+    self.is_compliment = false if self.is_compliment.blank?
     true
   end
 

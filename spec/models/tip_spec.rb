@@ -4,15 +4,27 @@ describe Tip do
   it { expect(FactoryGirl.build :tip).to be_valid }
   it { should generate_a_uuid }
 
-  describe 'the `can_purchase_with_reputation` attribute' do
+  it { should validate_presence_of :subject }
+  it { should validate_presence_of :body }
+  it { should validate_presence_of :user }
+  it { should validate_presence_of :noun }
+  it { should ensure_inclusion_of(:display_as).in_array Tip::DISPLAY_AS_OPTIONS }
+
+  describe 'the `is_free` attribute' do
     it 'defaults to false' do
-      expect(FactoryGirl.create(:tip, can_purchase_with_reputation: nil).can_purchase_with_reputation).to eq false
+      expect(FactoryGirl.create(:tip, is_free: nil).is_free).to eq false
     end
   end
 
-  describe 'the `is_anonymous` attribute' do
+  describe 'the `is_compliment` attribute' do
     it 'defaults to false' do
-      expect(FactoryGirl.create(:tip, is_anonymous: nil).is_anonymous).to eq false
+      expect(FactoryGirl.create(:tip, is_compliment: nil).is_compliment).to eq false
+    end
+  end
+
+  describe 'the `display_as` attribute' do
+    it 'defaults to full_name' do
+      expect(FactoryGirl.create(:tip, display_as: nil).display_as).to eq 'full_name'
     end
   end
 

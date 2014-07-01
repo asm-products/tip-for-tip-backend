@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140624042627) do
+ActiveRecord::Schema.define(version: 20140701070859) do
 
   create_table "iap_receipt_verifications", force: true do |t|
     t.integer  "user_id"
@@ -131,18 +131,19 @@ ActiveRecord::Schema.define(version: 20140624042627) do
   add_index "subscriptions", ["partner_id"], name: "index_subscriptions_on_partner_id", using: :btree
 
   create_table "tips", force: true do |t|
-    t.string   "uuid",                         limit: 36,                 null: false
-    t.string   "subject",                                                 null: false
-    t.text     "body",                                                    null: false
+    t.string   "uuid",          limit: 36,                 null: false
+    t.string   "subject",                                  null: false
+    t.text     "body",                                     null: false
     t.integer  "user_id"
     t.integer  "noun_id"
     t.string   "noun_type"
-    t.boolean  "is_anonymous",                            default: false
-    t.boolean  "can_purchase_with_reputation",            default: false
-    t.boolean  "sent",                                    default: false
+    t.boolean  "is_free",                  default: false
+    t.boolean  "sent",                     default: false
     t.datetime "send_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "display_as"
+    t.boolean  "is_compliment",            default: false
   end
 
   add_index "tips", ["noun_id", "noun_type"], name: "index_tips_on_noun_id_and_noun_type", using: :btree
