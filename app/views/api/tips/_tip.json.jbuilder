@@ -5,13 +5,9 @@ json.(
   :subject,
   :body,
 
-  # TODO: noun
-  # TODO: user
-
-  :is_anonymous,
-  :can_purchase_with_reputation,
-
-  # TODO: MORE TIP DATA
+  :is_free,
+  :is_compliment,
+  :display_as,
 
   :send_at,
   :created_at,

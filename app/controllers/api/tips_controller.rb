@@ -24,7 +24,7 @@ class Api::TipsController < ApiController
 
   def create_tip_params
     required_params = %w{ subject body }
-    optional_params = %w{ is_anonymous can_purchase_with_reputation send_at }
+    optional_params = %w{ is_compliment is_free display_as send_at }
     required_params.each{ |p| params.require p }
     params.permit required_params + optional_params
   end
