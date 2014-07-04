@@ -29,6 +29,7 @@ class ApiController < ApplicationController
     # TODO: better response error messages
     # TODO: submit errors from there to bugsnag or something similar.
     logger.error "Unexpected server error, responding with 500: \n#{e.message}\n#{e.backtrace}"
+    Rollbar.report_exception(e)
     render status: 500, json: { error: :server_error, message: "Unexpected server error" }
   end
 
