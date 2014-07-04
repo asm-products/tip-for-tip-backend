@@ -31,6 +31,8 @@ gem 'redcarpet'
 # NewRelic monitoring and reporting
 gem 'newrelic_rpm'
 
+gem 'rollbar'
+
 # Use unicorn as the app server
 gem 'unicorn'
 
