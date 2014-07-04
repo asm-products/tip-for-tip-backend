@@ -1,8 +1,6 @@
 class Api::TipsController < ApiController
   before_filter :authenticate_user_from_token!
 
-  # rescue_from NameError, with: :not_found, only: :create
-
   def show
     id = show_params[:tip_id]
     @tip = ::Tip.where('id = ? OR uuid = ?', id, id).first!
