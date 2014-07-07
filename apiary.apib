@@ -112,7 +112,7 @@ View the details of an individual tip.
                 uuid: "294bec143ab73b6822aeb5ebe2ac05e7",
                 created_at: "2014-06-13T00:00:26.000-07:00",
                 updated_at: "2014-06-13T00:00:26.000-07:00",
-                type: "nouns/place"
+                type: "place"
             }
         }
 
@@ -184,7 +184,7 @@ A successful response will return the same data as the `GET tips/:tip_id` reques
             noun: {
                 id: 1,
                 uuid: "294bec143ab73b6822aeb5ebe2ac05e7",
-                type: "nouns/place"
+                type: "place"
                 name:"Starbucks",
                 latitude:-36.4234,
                 longitude:-88.5432,
@@ -263,7 +263,7 @@ A successful response will return the same data as the `GET tips/:tip_id` reques
             noun: {
                 id: 1,
                 uuid: "1234567adsf73b6822aeb5ebe2ac05e7",
-                type: "nouns/thing"
+                type: "thing"
                 name: "Tip for Tip"
                 created_at: "2014-06-13T00:00:26.000-07:00",
                 updated_at: "2014-06-13T00:00:26.000-07:00",
@@ -277,7 +277,7 @@ A successful response will return the same data as the `GET tips/:tip_id` reques
             {
                 "errors": [
                     {
-                        "resource": "Nouns::Thing",
+                        "resource": "nouns/thing",
                         "resource_id": null,
                         "parameter": "name",
                         "message": "is invalid.",
@@ -528,7 +528,7 @@ created resource.
             {
                 "errors": [
                     {
-                        "resource": "Nouns::Thing",
+                        "resource": "nouns/thing",
                         "resource_id": null,
                         "parameter": "name",
                         "message": "is invalid.",
