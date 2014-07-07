@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140701070859) do
+ActiveRecord::Schema.define(version: 20140707072942) do
 
   create_table "iap_receipt_verifications", force: true do |t|
     t.integer  "user_id"
@@ -46,6 +46,17 @@ ActiveRecord::Schema.define(version: 20140701070859) do
 
   add_index "identities", ["provider"], name: "index_identities_on_provider", using: :btree
   add_index "identities", ["user_id"], name: "index_identities_on_user_id", using: :btree
+
+  create_table "noun_creators", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "noun_id"
+    t.string   "noun_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "noun_creators", ["noun_type", "noun_id"], name: "index_noun_creators_on_noun_type_and_noun_id", using: :btree
+  add_index "noun_creators", ["user_id"], name: "index_noun_creators_on_user_id", using: :btree
 
   create_table "nouns_persons", force: true do |t|
     t.string   "uuid",       limit: 36, null: false
