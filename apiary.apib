@@ -124,21 +124,15 @@ View the details of an individual tip.
 
         If the tip was not found.
 
-## POST /:noun_type/:noun_id?/tips
+## POST /:noun_type/:noun_id/tips
 
 - Requires a current user
 
 Create a tip for a noun.
 
-(not yet implemented) <strike>If a noun id is provided, the noun will be looked up, but otherwise one will be created. The current user will be assigned as the tipper. If the noun has not yet had a tip, the user will be set as the first tipper.</strike>
+The current user will be assigned as the tipper. If the noun has not yet had a tip, the user will be set as the first tipper.
 
 A successful response will return the same data as the `GET tips/:tip_id` request.
-
-Examples:
-
-- <strike>`POST places/tips` - Creates a place and a tip based on the provided params.</strike>
-- `POST places/123-abc/tips` - Finds the place with the id `123-abc` and creates a tip based on the provided params.
-- <strike>`POST things/tips` - Creates a thing and a tip based on the provided params.</strike>
 
 + Parameters
 
@@ -190,9 +184,12 @@ Examples:
             noun: {
                 id: 1,
                 uuid: "294bec143ab73b6822aeb5ebe2ac05e7",
+                type: "nouns/place"
+                name:"Starbucks",
+                latitude:-36.4234,
+                longitude:-88.5432,
                 created_at: "2014-06-13T00:00:26.000-07:00",
                 updated_at: "2014-06-13T00:00:26.000-07:00",
-                type: "nouns/place"
             }
         }
 
@@ -204,6 +201,97 @@ Examples:
 
         If the noun was not found.
 
+## POST /:noun_type/tips
+
+Create a tip for a noun and create the noun in the process. In the example case of the creation
+of a tip for a thing that a user has named, but could not find in a search, the valid attributes
+for the noun should be passed as a nested object.
+
+Currently only an option for creating Thing nouns.
+
+A successful response will return the same data as the `GET tips/:tip_id` request.
+
++ Parameters
+    + noun_type (string)                ... The type of noun the created tip will be created for. May be one of the available noun types.
+    + subject (string)                  ... The tip subject line. A summary of the tip being given.
+    + body (string)                     ... The body of the tip.
+    + send_at (optional, timestamp or string) ... The time or named timeframe at which the tip should be sent. If the value is a parseable timestamp, it will be treated as an exact time to send the tip. Otherwise the value is expected to be one of a few available named timeframes: 'today', 'tomorrow', 'later this week', 'in a few weeks'. These strings are case insensitive but must be otherwise matched letter for letter. Randomness will be used to create a send_at time with from these values, so for example, 'tomorrow' will not create a send_at time that is precisely 24 hours from now. If ommitted or null, the tip will be sent immediately.
+
+    + is_compliment (optional, boolean) ... A compliment tip does not require purchasing, but rather, is meant to add positivity in the app. Default: false
+    + is_free (optional, boolean)       ... A "free tip" is a tip that can be purchased using reputation points. Default: false
+    + display_as (optional, string)     ... How the tip submitter would like their identity displayed. Possible options: first_name, full_name, anonymous. Default: full_name
+
+    + noun (object)                    ... The noun to create. The parameters for this nested object are the same as the api request to create the noun directly.
++ Request (application/json)
+    + Body
+            {
+                noun_type: "place",
+                noun_id: 1,
+                subject: "Tempora vitae aspernatur nam quidem recusandae ratione possimus.",
+                body: "Aut similique recusandae sequi dolor possimus. Lorem ipsem...",
+                is_compliment: false,
+                is_free: false,
+                display_as: "anonymous",
+                send_at: "tomorrow",
+
+                noun: {
+                    noun_type: "thing",
+                    name: "Tip for Tip"
+                }
+            }
++ Response 201 (application/json)
+        {
+            id: 1,
+            uuid: "45673e9a26145957a0cdbf470f1e0700",
+            subject: "Tempora vitae aspernatur nam quidem recusandae ratione possimus.",
+            body: "Aut similique recusandae sequi dolor possimus. Lorem ipsem...",
+            display_as: "anonymous",
+            is_free: false
+            is_compliment: false,
+            send_at: "2014-06-14T00:00:26.000-07:00",
+            created_at: "2014-06-13T00:00:26.000-07:00",
+            updated_at: "2014-06-13T00:00:26.000-07:00",
+            user: {
+                id: 2,
+                uuid: "f4773e96b76df671fbe90f7c48db5640",
+                username: "BruceChelmsforde7a8da84",
+                first_name: "Bruce",
+                last_name: "Chelmsford",
+                created_at: "2014-06-13T00:00:26.000-07:00",
+                updated_at: "2014-06-13T00:00:26.000-07:00"
+            },
+            noun: {
+                id: 1,
+                uuid: "1234567adsf73b6822aeb5ebe2ac05e7",
+                type: "nouns/thing"
+                name: "Tip for Tip"
+                created_at: "2014-06-13T00:00:26.000-07:00",
+                updated_at: "2014-06-13T00:00:26.000-07:00",
+            }
+        }
++ Response 401
++ Response 404
++ Response 422
+    + Body
+
+            {
+                "errors": [
+                    {
+                        "resource": "Nouns::Thing",
+                        "resource_id": null,
+                        "parameter": "name",
+                        "message": "is invalid.",
+                        "code": "invalid"
+                    },
+                    {
+                        "resource": "tip",
+                        "resource_id": null,
+                        "parameter": "subject",
+                        "message": "is invalid.",
+                        "code": "invalid"
+                    }
+                ]
+            }
 
 ## POST /tips/{tip_id}/purchases/itunes
 
@@ -225,14 +313,12 @@ iTunes receipt format information can be found at
 + Parameters
 
     + tip_id (string) ... The id or uuid of the tip being purchased.
-
 + Request (application/json)
 
         {
             receipt_data: "<encrypted receipt data>=",
             transaction_id: 'abc123'
         }
-
 + Response 201 (application/json)
 
         {
@@ -243,14 +329,14 @@ iTunes receipt format information can be found at
                 "TODO": "TODO"
             }
         }
-
 + Response 401 (application/json)
 
         If a valid authentication token or other method is not provided with the request.
-
 + Response 404 (application/json)
 
         If the tip was not found.
++ Response 400
++ Response 422
 
 ## POST /tips/{tip_id}/purchase/google
 
@@ -274,7 +360,6 @@ TODO
 + Parameters
 
     + tip_id (string) ... The id or uuid of the tip being purchased.
-
 + Request (application/json)
 
         {
@@ -284,7 +369,6 @@ TODO
             transaction_currency: 'USD',
             transaction_timestamp: '2014-05-25T16:45:49Z'
         }
-
 + Response 201 (application/json)
 
         {
@@ -295,15 +379,12 @@ TODO
                 "TODO": "TODO"
             }
         }
-
 + Response 401 (application/json)
-
         If a valid authentication token or other method is not provided with the request.
-
 + Response 404 (application/json)
-
         If the tip was not found.
-
++ Response 400
++ Response 422
 
 
 
@@ -355,7 +436,8 @@ Todos:
 
                 ]
             }
-
++ Response 401
++ Response 404
 
 ## GET /nouns/places/foursquare/:foursquare_id
 Get a place by its Foursquare id. The data returned is the T4T data on the place,
@@ -388,6 +470,8 @@ found locally, a record is created for it.
                     <!-- todo -->
                 ]
             }
++ Response 401
++ Response 404
 
 
 ## GET /nouns/things/:thing_id
@@ -411,6 +495,48 @@ The associated data returned includes tip data, paginated when necessary.
                     <!-- todo -->
                 ]
             }
++ Response 401
++ Response 404
+
+## POST /nouns/things
+Create a Thing noun.
+
+In a successful response, the returned data is the same as the GET request for the
+created resource.
+
++ Parameters
+    + name (string) ... The name of the thing to create.
++ Request
+    + Body
+            {
+                name: "Tip for Tip"
+            }
++ Response 201
+
+        {
+            id: 1,
+            uuid: "1234567adsf73b6822aeb5ebe2ac05e7",
+            name: "Tip for Tip"
+            created_at: "2014-06-13T00:00:26.000-07:00",
+            updated_at: "2014-06-13T00:00:26.000-07:00",
+        }
++ Response 401
++ Response 404
++ Response 422
+    + Body
+
+            {
+                "errors": [
+                    {
+                        "resource": "Nouns::Thing",
+                        "resource_id": null,
+                        "parameter": "name",
+                        "message": "is invalid.",
+                        "code": "invalid"
+                    }
+                ]
+            }
+
 
 
 
@@ -477,11 +603,10 @@ Expected responses:
     provided in the response body.
 
 + Request (application/json)
-
-        {
-            title: "2 Free cups of coffee!"
-        }
-
+    + Body
+            {
+                title: "2 Free cups of coffee!"
+            }
 + Response 200
     [Perk][]
 + Response 401
@@ -500,7 +625,6 @@ Expected responses:
                     }
                 ]
             }
-
 
 ### Remove a Perk [DELETE]
 Remove a perk.
