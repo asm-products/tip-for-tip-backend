@@ -8,8 +8,10 @@ class Api::Nouns::ThingsController < ApiController
   end
 
   def create
-    @thing = ::Nouns::Thing.create! create_params
-    NounCreator.create! noun: @thing, user: current_user
+    ::Nouns::Thing.transaction do
+      @thing = ::Nouns::Thing.create! create_params
+      NounCreator.create! noun: @thing, user: current_user
+    end
     render :show, status: :created
   end
 
