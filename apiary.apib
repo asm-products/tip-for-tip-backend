@@ -390,7 +390,27 @@ found locally, a record is created for it.
             }
 
 
+## GET /nouns/things/:thing_id
+Get a thing by its id.
 
+The associated data returned includes tip data, paginated when necessary.
+
++ Response 200
+
+    + Body
+
+            {
+                "id":77,
+                "uuid":"1234513e43a9d420999faaf87a83be9",
+                "name":"Tip for Tip",
+                "created_at":"2014-05-19T02:00:04.000-07:00",
+                "updated_at":"2014-05-19T02:00:04.000-07:00",
+
+                "tips_count":3,
+                "tips": [
+                    <!-- todo -->
+                ]
+            }
 
 
 

@@ -30,7 +30,7 @@ describe TipCreator do
       expect(TipCreator.new.send :parse_send_at, time.to_datetime).to eq time
     end
 
-    it 'parses "today" as any ramdom time 1 to 4 hours from now' do
+    it 'parses "today" as any random time 1 to 4 hours from now' do
       10.times do
         time = TipCreator.new.send :parse_send_at, "today"
         expect(time).to be_between(1.hour.from_now, 4.hours.from_now)
