@@ -42,4 +42,32 @@ describe Api::Nouns::ThingsController do
 
     end
   end
+
+  describe '#create' do
+    let(:params) { { name: "Tip for Tip" } }
+
+    # Auth
+    it { should use_before_filter(:authenticate_user_from_token!) }
+
+    describe 'params' do
+      it { should permit(:name).for :create }
+    end
+
+    describe 'creating the thing' do
+      subject { post :create, params }
+
+      it 'creates a Nouns::Thing record' do
+        expect{ subject }.to change{ Nouns::Thing.count }.by 1
+      end
+
+      it 'creates a NounCreator record' do
+        expect{ subject }.to change{ NounCreator.count }.by 1
+      end
+
+      it 'renders the show view' do
+        expect(subject).to render_template :show
+      end
+    end
+
+  end
 end

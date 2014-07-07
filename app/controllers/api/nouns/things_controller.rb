@@ -7,6 +7,12 @@ class Api::Nouns::ThingsController < ApiController
     @thing = ::Nouns::Thing.where('id = ? OR uuid = ?', id, id).first!
   end
 
+  def create
+    @thing = ::Nouns::Thing.create! create_params
+    NounCreator.create! noun: @thing, user: current_user
+    render :show, status: :created
+  end
+
   private
 
   def show_params
@@ -14,4 +20,7 @@ class Api::Nouns::ThingsController < ApiController
     params.permit(:thing_id)
   end
 
+  def create_params
+    params.permit(:name)
+  end
 end

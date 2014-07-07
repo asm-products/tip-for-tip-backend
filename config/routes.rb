@@ -19,7 +19,8 @@ Rails.application.routes.draw do
     namespace :nouns do
       get '/places/foursquare/:foursquare_id', to: 'places#foursquare_show', as: :foursquare_place
       get '/places/:place_id', to: 'places#show', as: :place
-      get '/things/:thing_id', to: 'things#show', as: :thing
+
+      resources :things, only: [:show, :create], param: :thing_id
     end
 
     resource :tips, path: '/:noun_type/:noun_id/tips', only: :create
