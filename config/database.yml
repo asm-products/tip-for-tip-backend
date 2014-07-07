@@ -1,10 +1,9 @@
 default: &default
   adapter: mysql2
   encoding: utf8
-  pool: 5
   username: root
-  password:
-  host: localhost
+  password: 
+  pool: 5
   port: 3306
 
 development:
@@ -14,4 +13,3 @@ development:
 test:
   <<: *default
   database: tipfortip_test
-
