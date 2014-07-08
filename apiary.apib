@@ -14,13 +14,13 @@ Use Facebook as a user authentication/creation portal.
 
 ## GET /auth/facebook
 Authenticate via Facebook. Starts the handshake process for the client with Facebook Oauth.
-In the end, a user is redirected back to `/profile` unless a `redirectTo` param is provided.
+In the end, a user is redirected back to `/profile` unless a `redirect_to` param is provided.
 
 - If the user does not yet have an account, one is created for them.
 - If the user has an account but is not yet authenticated, they are logged in and their profile data is synced with their Facebook data.
 - If the user has an account and is already authenticated, their profile data is synced with their Facebook data.
 - If the user has an account by email but has not yet used this provider for authentication, TODO
-- If a `redirectTo` param is provided, successful authentication redirects to this url.
+- If a `redirect_to` param is provided, successful authentication redirects to this url.
 
 + Response 302
 
