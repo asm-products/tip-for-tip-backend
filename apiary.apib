@@ -468,21 +468,30 @@ found locally, a record is created for it.
 ## GET /nouns/things{?q}
 Search for a thing by query.
 
+TODO: Pagination. Currently results will be limited to 20.
+
+Expected responses:
+
+- `200 OK` if results are found.
+- `204 NO CONTENT` if no results are found.
+- `401 UNAUTHORIZED` if there is no currently autheticated user.
+
 + Parameters
     + q (required, string) ... The string to search for.
 + Response 200
     + Body
 
-        [
-            {
-                id: 1,
-                type: 'thing'
-                uuid: "1234567adsf73b6822aeb5ebe2ac05e7",
-                name: "Tip for Tip"
-                created_at: "2014-06-13T00:00:26.000-07:00",
-                updated_at: "2014-06-13T00:00:26.000-07:00",
-            }
-        ]
+            [
+                {
+                    id: 1,
+                    type: 'thing'
+                    uuid: "1234567adsf73b6822aeb5ebe2ac05e7",
+                    name: "Tip for Tip"
+                    created_at: "2014-06-13T00:00:26.000-07:00",
+                    updated_at: "2014-06-13T00:00:26.000-07:00",
+                }
+            ]
++ Response 204
 + Response 401
 
 ## GET /nouns/things/:thing_id

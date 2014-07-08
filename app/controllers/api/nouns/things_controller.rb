@@ -15,6 +15,12 @@ class Api::Nouns::ThingsController < ApiController
     render :show, status: :created
   end
 
+  def search
+    @things = ::Nouns::Thing.where(["name LIKE :q", { q: "%#{search_params[:q]}%" }]).limit(20)
+    render status: :no_content if @things.empty?
+    # TODO: improve searching.
+  end
+
   private
 
   def show_params
@@ -25,4 +31,9 @@ class Api::Nouns::ThingsController < ApiController
   def create_params
     params.permit(:name)
   end
+
+  def search_params
+    params.permit(:q)
+  end
+
 end

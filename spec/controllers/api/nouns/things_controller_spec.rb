@@ -70,4 +70,36 @@ describe Api::Nouns::ThingsController do
     end
 
   end
+
+  describe '#search' do
+    let(:thing) { FactoryGirl.create :thing }
+    let(:params) { { q: thing.name } }
+
+    # Auth
+    it { should use_before_filter(:authenticate_user_from_token!) }
+
+    it { should permit(:q).for :search, verb: :get }
+
+    it 'responds with 200 if records are found' do
+      get :search, params
+      expect(response.status).to eq 200
+    end
+
+    it 'responds with 204 if no records are found' do
+      thing.update_attributes! name: "abc"
+      params[:q] = "xyz"
+      get :search, params
+      expect(response.status).to eq 204
+    end
+
+    it 'renders the search view' do
+      expect(get :search, params).to render_template 'search'
+    end
+
+    it 'limits the number of search results to 20' do
+      FactoryGirl.create_list :thing, 20, name: thing.name
+      get :search, params
+      expect(assigns(:things).length).to eq 20
+    end
+  end
 end

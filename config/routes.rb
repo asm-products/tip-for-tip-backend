@@ -20,6 +20,7 @@ Rails.application.routes.draw do
       get '/places/foursquare/:foursquare_id', to: 'places#foursquare_show', as: :foursquare_place
       get '/places/:place_id', to: 'places#show', as: :place
 
+      get 'things', to: 'things#search', as: :things_search, constraints: SearchConstraint
       resources :things, only: [:show, :create], param: :thing_id
     end
 
