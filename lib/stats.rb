@@ -6,7 +6,7 @@ module Stats
 
   def self.api_user_signin id, provider, meta={}
     meta.symbolize_keys!
-    meta.merge! id: id
+    meta.merge! id: id, provider: provider
     increment 'api.user.signin', meta
   end
 
