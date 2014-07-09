@@ -14,7 +14,6 @@ module Stats
     increment 'foursquare.place.created'
   end
 
-
   private
 
   def self.increment metric_name, meta={}
