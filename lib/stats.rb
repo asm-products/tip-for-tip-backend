@@ -7,8 +7,13 @@ module Stats
   def self.api_user_signin id, provider, meta={}
     meta.symbolize_keys!
     meta.merge! id: id
-    increment 'api.users.signin', meta
+    increment 'api.user.signin', meta
   end
+
+  def self.foursquare_place_created
+    increment 'foursquare.place.created'
+  end
+
 
   private
 
