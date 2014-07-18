@@ -32,6 +32,7 @@ gem 'redcarpet'
 gem 'newrelic_rpm'
 
 gem 'rollbar'
+gem 'statsmix'
 
 # Use unicorn as the app server
 gem 'unicorn'

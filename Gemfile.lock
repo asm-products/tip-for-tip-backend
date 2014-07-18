@@ -217,6 +217,7 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (~> 2.8)
+    statsmix (1.0.0)
     terminal-table (1.4.5)
     thor (0.19.1)
     thread_safe (0.3.3)
@@ -273,6 +274,7 @@ DEPENDENCIES
   sdoc (~> 0.4.0)
   shoulda-matchers
   spring
+  statsmix
   timecop
   unicorn
   venice!

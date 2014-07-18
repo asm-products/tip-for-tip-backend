@@ -15,6 +15,7 @@ class Api::Nouns::PlacesController < ApiController
     unless @place
       response.status = :created
       @place = FoursquarePlaceCreator.new.(foursquare_show_params[:foursquare_id])
+      Stats.foursquare_place_created
     end
 
     render :show
