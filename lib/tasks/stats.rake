@@ -6,7 +6,12 @@ namespace :stats do
     Stats::Gauge.users_count
   end
 
-  # this resets hourly
-  # Stats::Gauge.foursquare_rate_limit
+  task daily: :environment do
+    # none :/
+  end
+
+  task continuous: :environment do
+    # Stats::Gauge.foursquare_rate_limit
+  end
 
 end
