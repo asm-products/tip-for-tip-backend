@@ -4,6 +4,9 @@ FactoryGirl.define do
 
   factory :omniauth, class: OmniAuth::AuthHash do
 
+    sequence :uid
+    provider "Foo Provider"
+
     credentials do
       {
         expires: true,
@@ -15,6 +18,7 @@ FactoryGirl.define do
   end
 
   factory :facebook_omniauth, parent: :omniauth do
+    provider :facebook
 
     info do
       {

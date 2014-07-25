@@ -18,18 +18,30 @@ module Support
       [user, options]
     end
 
-    module OmniauthMocks
+    module Omniauth
 
-      # TODO: add support for customizing the user to log in
-
-      def mock_facebook_omniauth
-        OmniAuth.config.mock_auth[:facebook] = FactoryGirl.build :facebook_omniauth
+      def omniauth_from_identity(identity)
+        auth = FactoryGirl.attributes_for "#{identity.provider}_omniauth",
+          provider: identity.provider,
+          uid: identity.uid
+        auth[:credentials][:expires_at] = identity.token_expires_at.to_i
+        auth[:credentials][:token] = identity.token
+        OmniAuth::AuthHash.new auth
       end
 
-      def mock_twitter_omniauth
-        OmniAuth.config.mock_auth[:facebook] = FactoryGirl.build :facebook_omniauth
-      end
+      module Mocks
 
+        # TODO: add support for customizing the user to log in
+
+        def mock_facebook_omniauth
+          OmniAuth.config.mock_auth[:facebook] = FactoryGirl.build :facebook_omniauth
+        end
+
+        def mock_twitter_omniauth
+          OmniAuth.config.mock_auth[:facebook] = FactoryGirl.build :facebook_omniauth
+        end
+
+      end
     end
 
 
@@ -79,7 +91,8 @@ RSpec.configure do |config|
   OmniAuth.config.test_mode = true
   # OmniauthMocks module methods add provider specific auth objects to the
   # OmniAuth mock object.
-  config.include Support::Auth::OmniauthMocks
+  config.include Support::Auth::Omniauth
+  config.include Support::Auth::Omniauth::Mocks
 
   config.include Support::Auth::Controller, type: :controller
   # config.include Support::Auth::Request, type: :request
