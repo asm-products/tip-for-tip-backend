@@ -19,6 +19,9 @@ gem 'venice', github: 'amoslanka/venice' # iTunes IAP receipt validation
 
 gem 'foursquare2'
 
+# Notifications and Email
+gem 'mandrill-api'
+
 gem 'devise'
 gem 'omniauth'
 gem 'omniauth-facebook'

@@ -47,6 +47,7 @@ class OmniauthUserFinder
       user.username = auth.info.nickname if auth.info.nickname
       # user.skip_confirmation!
       user.save!
+      UserLifecycleMailer.welcome(user).send!
     end
 
     # Associate the identity with the user if not already
