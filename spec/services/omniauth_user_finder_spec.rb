@@ -14,9 +14,20 @@ describe OmniauthUserFinder do
   end
 
   context 'when a user does not have an account' do
+    let(:auth) { omniauth_from_identity FactoryGirl.build(:identity, user: nil) }
+    subject { OmniauthUserFinder.new.(auth) }
+
+    it 'creates a user' do
+      expect{ subject }.to change(User, :count).by 1
+    end
+
+    it 'creates an identity' do
+      expect{ subject }.to change(Identity, :count).by 1
+    end
+
+    it 'returns the user' do
+      expect(subject).to be_a_kind_of User
+    end
 
   end
-
-
-
 end
