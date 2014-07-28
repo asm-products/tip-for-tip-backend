@@ -16,6 +16,7 @@ Summary
 - [Mysql](#database)
 - [Rspec](#testing)
 - [Hosted on Heroku](#deployment)
+- CI on Shippable [![Build Status](https://api.shippable.com/projects/537c16799d51c6db008e35cc/badge/master)](https://www.shippable.com/projects/537c16799d51c6db008e35cc)
 - [Apiary for documentation](#documentation)
 
 Quick commands
