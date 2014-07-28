@@ -1,45 +1,21 @@
-# Note: This mailer scheme will be replaced by our notifications system later.
-require 'mandrill'
+class UserLifecycleMailer < MandrillMailer::TemplateMailer
+  default from: 'support@tipfortip.com', from_name: "Tip for Tip"
 
-class UserLifecycleMailer
+  def welcome user
+    i18n_scope = 'user_lifecycle_mailer.welcome'
 
-  def self.welcome(user)
-    template_name = "welcome"
-    template_content = [{"name"=> user.full_name}]
-    message = {
-      to: [{ email: user.email, name: user.full_name, type: :to }]
-    }
-    async = true
-    new user, template_name, template_content, message
-  end
+    mandrill_mail template: 'welcome',
+      subject: I18n.t(:subject, scope: i18n_scope),
+      to: { email: user.email, name: user.full_name },
+      recipient_vars: [
+        user.email => {
+          "EMAIL" => user.email,
+          "FULL_NAME" => user.full_name,
+          "FIRST_NAME" => user.first_name,
+          "LAST_NAME" => user.last_name
+          # location
+        }
+      ]
 
-  # Instance methods
-
-  def initialize(user, template, content, message)
-    @user = user
-    @template = template
-    @content = content
-    @message = message
-  end
-
-  def send!
-    begin
-      puts 'SENDING...'
-      p @template
-      p @content
-      p @message
-      result = mandrill.messages.send_template @template, @content, @message, true
-    rescue Mandrill::Error => e
-      # TODO: handle mandrill errors this way?
-      logger.error "Unexpected server error, responding with 500: \n#{e.message}\n#{e.backtrace.join("\n")}"
-      custom_data = { user_id: user.id, error: "#{e.class} - #{e.message}"}
-      Rollbar.report_exception(e, custom_data)
-    end
-  end
-
-  private
-
-  def mandrill
-    @mandrill ||= Mandrill::API.new(Rails.application.secrets.mandrill['api_key'])
   end
 end

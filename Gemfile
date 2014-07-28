@@ -21,6 +21,7 @@ gem 'foursquare2'
 
 # Notifications and Email
 gem 'mandrill-api'
+gem 'mandrill_mailer'
 
 gem 'devise'
 gem 'omniauth'
