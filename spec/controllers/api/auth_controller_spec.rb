@@ -6,8 +6,6 @@ describe Api::AuthController do
   let(:token) { identity.token }
   before { accept_json }
 
-  include Support::Auth::OmniauthMocks
-
   describe '#after_sign_in_path_for' do
 
     before do
