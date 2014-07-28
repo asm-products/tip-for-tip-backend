@@ -3,6 +3,8 @@ Tip for Tip Backend/API
 
 The Tip for Tip database, API, and management. TRIPLE BAM!
 
+[![Build Status](https://api.shippable.com/projects/537c16799d51c6db008e35cc/badge/master)](https://www.shippable.com/projects/537c16799d51c6db008e35cc)
+
 ---
 
 <img src='http://cl.ly/image/442N191I2L0g/gif.gif' width='100%' />
@@ -16,7 +18,7 @@ Summary
 - [Mysql](#database)
 - [Rspec](#testing)
 - [Hosted on Heroku](#deployment)
-- CI on Shippable [![Build Status](https://api.shippable.com/projects/537c16799d51c6db008e35cc/badge/master)](https://www.shippable.com/projects/537c16799d51c6db008e35cc)
+- [CI on Shippable](https://www.shippable.com/projects/537c16799d51c6db008e35cc)
 - [Apiary for documentation](#documentation)
 
 Quick commands
