@@ -28,6 +28,9 @@ module TipForTip
 
     # Middleware
 
+    # Mail
+    config.mandrill_mailer.default_url_options = { host: 'tipfortip.com', protocol: :https }
+    config.mandrill_mailer.api_key = Rails.application.secrets.mandrill['api_key']
 
   end
 end

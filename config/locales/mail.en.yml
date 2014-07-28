@@ -1,0 +1,4 @@
+en:
+  user_lifecycle_mailer:
+    welcome:
+      subject: Welcome to Tip for Tip!
