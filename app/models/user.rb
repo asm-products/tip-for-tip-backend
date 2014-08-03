@@ -8,6 +8,9 @@ class User < ActiveRecord::Base
   has_many :iap_receipt_verifications
   has_many :purchased_tips, through: :purchases, source: :tip, inverse_of: :purchasers
 
+  # Accounting associations
+  belongs_to :customer_account
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :omniauthable, :trackable, :rememberable
@@ -20,4 +23,11 @@ class User < ActiveRecord::Base
   def full_name
     "#{self.first_name} #{self.last_name}"
   end
+
+  after_create do
+    unless self.customer_account
+      self.update_attributes! customer_account: CustomerAccount.create!(user: self)
+    end
+  end
+
 end

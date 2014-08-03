@@ -15,7 +15,9 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # gem 'bcrypt', '~> 3.1.7'
 
 gem 'memoist' # One line memoization of instance methods.
+
 gem 'venice', github: 'amoslanka/venice' # iTunes IAP receipt validation
+gem 'plutus' # Double Entry Accounting framework
 
 gem 'foursquare2'
 

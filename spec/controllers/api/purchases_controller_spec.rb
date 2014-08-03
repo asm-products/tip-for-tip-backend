@@ -20,6 +20,7 @@ describe Api::PurchasesController do
       }
     end
     before { stub_successful_itunes_receipt_verification }
+    before { Accounts.seed }
 
     # Auth
     it { should use_before_filter(:authenticate_user_from_token!) }
