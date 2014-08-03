@@ -9,27 +9,36 @@ json.(
   :is_compliment,
   :display_as,
 
-  :send_at,
   :created_at,
   :updated_at
 )
 
-json.user do
+user_name = case tip.display_as.to_sym
+when :anonymous then 'anonymous'
+when :full_name then tip.user.full_name
+when :first_name then tip.user.first_name
+end
+json.user_name user_name
 
-  json.(
-    tip.user,
-    :id,
-    :uuid,
-    :username,
-    :first_name,
-    :last_name,
 
-    # TODO: more user data
+unless tip.display_as_anonymous?
+  json.user do
 
-    :created_at,
-    :updated_at
-  )
+    json.(
+      tip.user,
+      :id,
+      :uuid,
+      :username,
+      :first_name,
+      :last_name,
 
+      # TODO: more user data
+
+      :created_at,
+      :updated_at
+    )
+
+  end
 end
 
 json.noun do

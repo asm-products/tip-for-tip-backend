@@ -2,10 +2,6 @@ require 'api_constraints'
 
 Rails.application.routes.draw do
 
-  namespace :api do
-    get 'purchases/create'
-  end
-
   devise_for :users, controllers: { omniauth_callbacks: 'auth' }, path: ''
   devise_scope :user do
     get 'auth/logout', to: 'auth#destroy', as: :destroy_user_session, via: [:get, :delete, :post]
@@ -15,6 +11,7 @@ Rails.application.routes.draw do
   scope module: 'api', constraints: ApiConstraints.new(version: 1, default: :true), defaults: { format: :json } do
 
     get '/profile', to: 'users#profile'
+    get '/account/purchases', to: 'account#purchases'
 
     namespace :nouns do
       get '/places/foursquare/:foursquare_id', to: 'places#foursquare_show', as: :foursquare_place
