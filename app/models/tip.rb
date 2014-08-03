@@ -23,4 +23,8 @@ class Tip < ActiveRecord::Base
     true
   end
 
+  def display_as_first_name?; self.display_as.to_sym == :first_name; end
+  def display_as_full_name?;  self.display_as.to_sym == :full_name;  end
+  def display_as_anonymous?;  self.display_as.to_sym == :anonymous;  end
+
 end

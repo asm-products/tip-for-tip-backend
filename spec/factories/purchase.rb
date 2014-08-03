@@ -13,7 +13,7 @@ FactoryGirl.define do
     end
 
     itunes
-    sequence :transaction_id
+    transaction_id { "fake_#{SecureRandom.urlsafe_base64(4)}" }
     transaction_timestamp 1.minute.ago
 
     user
