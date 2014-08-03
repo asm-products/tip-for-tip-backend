@@ -16,30 +16,10 @@ json.(
 user_name = case tip.display_as.to_sym
 when :anonymous then 'anonymous'
 when :full_name then tip.user.full_name
-when :first_name then tip.user.first_name
+when :username then tip.user.username
 end
 json.user_name user_name
 
-
-unless tip.display_as_anonymous?
-  json.user do
-
-    json.(
-      tip.user,
-      :id,
-      :uuid,
-      :username,
-      :first_name,
-      :last_name,
-
-      # TODO: more user data
-
-      :created_at,
-      :updated_at
-    )
-
-  end
-end
 
 json.noun do
 

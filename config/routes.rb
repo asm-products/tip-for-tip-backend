@@ -12,6 +12,7 @@ Rails.application.routes.draw do
 
     get '/profile', to: 'users#profile'
     get '/account/purchases', to: 'account#purchases'
+    get '/account/sales', to: 'account#sales'
 
     namespace :nouns do
       get '/places/foursquare/:foursquare_id', to: 'places#foursquare_show', as: :foursquare_place
