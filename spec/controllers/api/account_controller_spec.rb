@@ -54,4 +54,23 @@ describe Api::AccountController do
     end
   end
 
+  describe '#balance' do
+    before do
+      FactoryGirl.create :purchase, tip: FactoryGirl.create(:tip, user: user) # a sale
+      FactoryGirl.create :purchase, user: user # a purchase
+    end
+
+    # Auth
+    it { should use_before_filter(:authenticate_user_from_token!) }
+
+    # Success
+    it 'responds with success' do
+      get :balance
+      expect(response.status).to eq 200
+    end
+
+    it 'renders the balance view' do
+      expect(get :balance).to render_template :balance
+    end
+  end
 end

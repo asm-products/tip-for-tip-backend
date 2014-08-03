@@ -25,6 +25,10 @@ class User < ActiveRecord::Base
     "#{self.first_name} #{self.last_name}"
   end
 
+  def account_balance
+    @account_balance ||= AccountBalance.new(self)
+  end
+
   after_create do
     unless self.customer_account
       self.update_attributes! customer_account: CustomerAccount.create!(user: self)
