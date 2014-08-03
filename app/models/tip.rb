@@ -1,6 +1,6 @@
 class Tip < ActiveRecord::Base
   include Uuid
-  DISPLAY_AS_OPTIONS = %w{first_name full_name anonymous}
+  DISPLAY_AS_OPTIONS = %w{username full_name anonymous}
 
   belongs_to :user
   belongs_to :noun, polymorphic: true
@@ -23,8 +23,8 @@ class Tip < ActiveRecord::Base
     true
   end
 
-  def display_as_first_name?; self.display_as.to_sym == :first_name; end
-  def display_as_full_name?;  self.display_as.to_sym == :full_name;  end
-  def display_as_anonymous?;  self.display_as.to_sym == :anonymous;  end
+  def display_as_username?;  self.display_as.to_sym == :username;  end
+  def display_as_full_name?; self.display_as.to_sym == :full_name; end
+  def display_as_anonymous?; self.display_as.to_sym == :anonymous; end
 
 end
