@@ -44,29 +44,12 @@ class ItunesPurchaseCreator
     end
 
     if verification.successful
-
-      purchase = Purchase.new service: :itunes,
+      purchase = Purchase.create! service: :itunes,
         tip: tip,
         user: user,
         transaction_id: transaction_id,
         iap_receipt_verification: verification
-
-      # Record the accounting entries for this purchase.
-      entry = PurchaseEntry.build purchase: purchase,
-        debits: [
-          { account: Accounts::CASH,            amount: 0.69 }, # Cash we control
-          { account: Accounts::ITUNES_IAP_FEES, amount: 0.30 }  # The fee is already paid
-        ],
-        credits: [
-          { account: tip.user.customer_account.name, amount: 0.50 }, # We owe the creator this much
-          { account: Accounts::PURCHASE_REVENUE,     amount: 0.49 }  # The rest is our gross revenue
-        ]
-
-      Purchase.transaction do
-        entry.save!
-        purchase.purchase_entry = entry
-        purchase.save!
-      end
+      Accounting::PurchaseEntryCreator.new.call purchase
       purchase
     else
       false

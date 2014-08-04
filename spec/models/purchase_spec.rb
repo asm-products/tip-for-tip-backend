@@ -2,6 +2,7 @@ require 'spec_helper.rb'
 
 describe Purchase do
   subject{ FactoryGirl.build :purchase }
+  before { Accounts::seed }
 
   it('has a valid factory') { expect(subject).to be_valid }
   it { should validate_presence_of :user }
@@ -24,4 +25,10 @@ describe Purchase do
     it { should be_invalid }
   end
 
+  context 'after created' do
+    it 'creates a PurchaseEntry' do
+      purchase = FactoryGirl.build :purchase
+      expect{ purchase.save! }.to change(PurchaseEntry, :count).by 1
+    end
+  end
 end
