@@ -24,11 +24,4 @@ describe Purchase do
     subject { FactoryGirl.build :purchase, iap_receipt_verification: verification }
     it { should be_invalid }
   end
-
-  context 'after created' do
-    it 'creates a PurchaseEntry' do
-      purchase = FactoryGirl.build :purchase
-      expect{ purchase.save! }.to change(PurchaseEntry, :count).by 1
-    end
-  end
 end
