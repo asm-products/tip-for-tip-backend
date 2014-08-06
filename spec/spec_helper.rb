@@ -4,6 +4,7 @@ require 'rspec/rails'
 require 'shoulda/matchers'
 require 'capybara/rails'
 require 'capybara/rspec'
+require 'sidekiq/testing'
 require 'webmock/rspec'
 require 'factory_girl'
 

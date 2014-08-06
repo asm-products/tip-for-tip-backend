@@ -29,5 +29,11 @@ describe OmniauthUserFinder do
       expect(subject).to be_a_kind_of User
     end
 
+    it 'delivers a welcome email' do
+      email = double(deliver: true)
+      expect(UserLifecycleMailer).to receive(:welcome).and_return email
+      expect(email).to receive(:deliver).once
+      Sidekiq::Testing.inline! { subject }
+    end
   end
 end

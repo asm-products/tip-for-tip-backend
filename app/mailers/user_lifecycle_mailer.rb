@@ -16,6 +16,9 @@ class UserLifecycleMailer < MandrillMailer::TemplateMailer
           # location
         }
       ]
+  end
 
+  def self.deliver_async mailer, user_id
+    UserLifecycleMailerWorker.perform_async mailer, user_id
   end
 end

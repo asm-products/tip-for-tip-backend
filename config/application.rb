@@ -17,7 +17,7 @@ module TipForTip
   class Application < Rails::Application
 
     config.autoload_paths += Dir["#{config.root}/lib/**/"]
-    config.autoload_paths += %W["#{config.root}/app/services/**/" "#{config.root}/app/validators/"]
+    config.autoload_paths += %W["#{config.root}/app/services/**/" "#{config.root}/app/validators/" "#{config.root}/app/workers/"]
 
     # Configure asset precompilation for heroku deployment
     config.assets.initialize_on_precompile = true
