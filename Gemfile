@@ -75,6 +75,7 @@ group :test do
   # gem "nyan-cat-formatter"
   gem 'database_cleaner'
   gem 'shoulda-matchers', require: false
+  gem "rspec-sidekiq" # Sidekiq matchers
   gem 'timecop'
   gem 'webmock'
 end
