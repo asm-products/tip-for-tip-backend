@@ -37,6 +37,7 @@ gem 'newrelic_rpm'
 
 gem 'rollbar'
 gem 'statsmix'
+gem 'sidekiq' # Workers
 
 # Use unicorn as the app server
 gem 'unicorn'
