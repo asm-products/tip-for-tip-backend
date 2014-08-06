@@ -37,7 +37,7 @@ module Accounting
           credit_amounts: itunes_credits
         }
       else
-        raise NotYetImplemented
+        raise NotImplementedError
       end
     end
 
