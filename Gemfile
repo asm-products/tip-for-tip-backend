@@ -28,6 +28,8 @@ gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-twitter'
 
+gem 'paypal-sdk-adaptivepayments'
+
 # Cross Origin Resource Sharing
 gem 'rack-cors'
 gem 'redcarpet'
