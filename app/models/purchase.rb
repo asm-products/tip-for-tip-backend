@@ -5,6 +5,9 @@ class Purchase < ActiveRecord::Base
   belongs_to :tip
   belongs_to :iap_receipt_verification
 
+  # Accounting association
+  belongs_to :purchase_entry, autosave: true
+
   validates_presence_of :user
   validates_presence_of :tip
   validates_presence_of :service
@@ -28,6 +31,4 @@ class Purchase < ActiveRecord::Base
   before_validation do
     self.service = self.service.to_s
   end
-
 end
-

@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   scope module: 'api', constraints: ApiConstraints.new(version: 1, default: :true), defaults: { format: :json } do
 
     get '/profile', to: 'users#profile'
+    get '/account/balance', to: 'account#balance'
     get '/account/purchases', to: 'account#purchases'
     get '/account/sales', to: 'account#sales'
 

@@ -45,11 +45,11 @@ class ItunesPurchaseCreator
 
     if verification.successful
       purchase = Purchase.create! service: :itunes,
-                                  tip: tip,
-                                  user: user,
-                                  transaction_id: transaction_id,
-                                  iap_receipt_verification: verification
-
+        tip: tip,
+        user: user,
+        transaction_id: transaction_id,
+        iap_receipt_verification: verification
+      Accounting::PurchaseEntryCreator.new.call purchase
       purchase
     else
       false

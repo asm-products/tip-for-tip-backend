@@ -11,7 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140707072942) do
+ActiveRecord::Schema.define(version: 20140730055146) do
+
+  create_table "cash_accounts", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "balance_cents", default: 0, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "cash_entries", force: true do |t|
+    t.integer  "cash_account_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "iap_receipt_verifications", force: true do |t|
     t.integer  "user_id"
@@ -114,6 +127,39 @@ ActiveRecord::Schema.define(version: 20140707072942) do
   add_index "perks", ["subscription_id"], name: "index_perks_on_subscription_id", using: :btree
   add_index "perks", ["uuid"], name: "index_perks_on_uuid", using: :btree
 
+  create_table "plutus_accounts", force: true do |t|
+    t.string   "name"
+    t.string   "type"
+    t.boolean  "contra"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "plutus_accounts", ["id"], name: "index_plutus_accounts_on_id", using: :btree
+  add_index "plutus_accounts", ["name", "type"], name: "index_plutus_accounts_on_name_and_type", using: :btree
+
+  create_table "plutus_amounts", force: true do |t|
+    t.string  "type"
+    t.integer "account_id"
+    t.integer "entry_id"
+    t.decimal "amount",     precision: 20, scale: 10
+  end
+
+  add_index "plutus_amounts", ["account_id", "entry_id"], name: "index_plutus_amounts_on_account_id_and_entry_id", using: :btree
+  add_index "plutus_amounts", ["entry_id", "account_id"], name: "index_plutus_amounts_on_entry_id_and_account_id", using: :btree
+  add_index "plutus_amounts", ["type"], name: "index_plutus_amounts_on_type", using: :btree
+
+  create_table "plutus_entries", force: true do |t|
+    t.string   "description"
+    t.string   "type"
+    t.integer  "commercial_document_id"
+    t.string   "commercial_document_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "plutus_entries", ["commercial_document_id", "commercial_document_type"], name: "index_entries_on_commercial_doc", using: :btree
+
   create_table "purchases", force: true do |t|
     t.string   "service"
     t.string   "transaction_id"
@@ -123,8 +169,10 @@ ActiveRecord::Schema.define(version: 20140707072942) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "iap_receipt_verification_id"
+    t.integer  "purchase_entry_id"
   end
 
+  add_index "purchases", ["purchase_entry_id"], name: "index_purchases_on_purchase_entry_id", using: :btree
   add_index "purchases", ["service"], name: "index_purchases_on_service", using: :btree
   add_index "purchases", ["tip_id"], name: "index_purchases_on_tip_id", using: :btree
   add_index "purchases", ["transaction_id"], name: "index_purchases_on_transaction_id", using: :btree
@@ -180,8 +228,10 @@ ActiveRecord::Schema.define(version: 20140707072942) do
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
     t.integer  "partner_id"
+    t.integer  "customer_account_id"
   end
 
+  add_index "users", ["customer_account_id"], name: "index_users_on_customer_account_id", using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["partner_id"], name: "index_users_on_partner_id", using: :btree
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree

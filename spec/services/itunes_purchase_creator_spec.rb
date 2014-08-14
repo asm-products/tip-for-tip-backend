@@ -2,14 +2,19 @@ require 'spec_helper.rb'
 
 describe ItunesPurchaseCreator do
   include Support::ItunesReceipts::VerificationMock
-  before{ stub_successful_itunes_receipt_verification }
+  before { stub_successful_itunes_receipt_verification }
+  before { Accounts.seed }
 
   let(:user) { FactoryGirl.create :user }
   let(:tip)  { FactoryGirl.create :tip  }
   subject{ ItunesPurchaseCreator.new.(user, tip, itunes_transaction_id, "encoded receipt") }
 
   it 'creates a purchase instance' do
-    expect{ subject }.to change{ Purchase.count }.by 1
+    expect{ subject }.to change(Purchase, :count).by 1
+  end
+
+  it 'creates a purchase_entry instance' do
+    expect{ subject }.to change(PurchaseEntry, :count).by 1
   end
 
   it 'creates an IapReceiptVerification instance' do
