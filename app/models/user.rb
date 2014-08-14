@@ -18,8 +18,10 @@ class User < ActiveRecord::Base
 
   validates_presence_of :email
   validates_presence_of :username
-  validates_uniqueness_of :email
-  validates_uniqueness_of :username
+  validates_uniqueness_of :email, allow_blank: true
+  validates_uniqueness_of :username, allow_blank: true
+  validates_format_of :email, with: /.+@.+/, allow_blank: true
+  validates_format_of :paypal_email, with: /.+@.+/, allow_blank: true
 
   def full_name
     "#{self.first_name} #{self.last_name}"

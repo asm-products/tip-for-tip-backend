@@ -7,6 +7,7 @@ json.(
   :first_name,
   :last_name,
   :email,
+  :paypal_email,
   :timezone,
   :locale,
 
