@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140730055146) do
+ActiveRecord::Schema.define(version: 20140814064514) do
 
   create_table "cash_accounts", force: true do |t|
     t.integer  "user_id"
@@ -108,6 +108,45 @@ ActiveRecord::Schema.define(version: 20140730055146) do
   add_index "nouns_things", ["name"], name: "index_nouns_things_on_name", using: :btree
   add_index "nouns_things", ["uuid"], name: "index_nouns_things_on_uuid", unique: true, using: :btree
 
+  create_table "oauth_access_grants", force: true do |t|
+    t.integer  "resource_owner_id", null: false
+    t.integer  "application_id",    null: false
+    t.string   "token",             null: false
+    t.integer  "expires_in",        null: false
+    t.text     "redirect_uri",      null: false
+    t.datetime "created_at",        null: false
+    t.datetime "revoked_at"
+    t.string   "scopes"
+  end
+
+  add_index "oauth_access_grants", ["token"], name: "index_oauth_access_grants_on_token", unique: true, using: :btree
+
+  create_table "oauth_access_tokens", force: true do |t|
+    t.integer  "resource_owner_id"
+    t.integer  "application_id"
+    t.string   "token",             null: false
+    t.string   "refresh_token"
+    t.integer  "expires_in"
+    t.datetime "revoked_at"
+    t.datetime "created_at",        null: false
+    t.string   "scopes"
+  end
+
+  add_index "oauth_access_tokens", ["refresh_token"], name: "index_oauth_access_tokens_on_refresh_token", unique: true, using: :btree
+  add_index "oauth_access_tokens", ["resource_owner_id"], name: "index_oauth_access_tokens_on_resource_owner_id", using: :btree
+  add_index "oauth_access_tokens", ["token"], name: "index_oauth_access_tokens_on_token", unique: true, using: :btree
+
+  create_table "oauth_applications", force: true do |t|
+    t.string   "name",         null: false
+    t.string   "uid",          null: false
+    t.string   "secret",       null: false
+    t.text     "redirect_uri", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "oauth_applications", ["uid"], name: "index_oauth_applications_on_uid", unique: true, using: :btree
+
   create_table "partners", force: true do |t|
     t.integer  "primary_user_id", null: false
     t.datetime "created_at"
@@ -178,6 +217,29 @@ ActiveRecord::Schema.define(version: 20140730055146) do
   add_index "purchases", ["transaction_id"], name: "index_purchases_on_transaction_id", using: :btree
   add_index "purchases", ["user_id"], name: "index_purchases_on_user_id", using: :btree
 
+  create_table "reputation_entries", force: true do |t|
+    t.integer  "reputation_id"
+    t.integer  "amount"
+    t.integer  "intended_amount"
+    t.integer  "source_id"
+    t.string   "source_type"
+    t.string   "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "reputation_entries", ["reputation_id"], name: "index_reputation_entries_on_reputation_id", using: :btree
+  add_index "reputation_entries", ["source_id", "source_type"], name: "index_reputation_entries_on_source_id_and_source_type", using: :btree
+
+  create_table "reputations", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "balance"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "reputations", ["user_id"], name: "index_reputations_on_user_id", using: :btree
+
   create_table "subscriptions", force: true do |t|
     t.integer  "partner_id", null: false
     t.integer  "noun_id",    null: false
@@ -229,6 +291,7 @@ ActiveRecord::Schema.define(version: 20140730055146) do
     t.string   "last_sign_in_ip"
     t.integer  "partner_id"
     t.integer  "customer_account_id"
+    t.string   "paypal_email"
   end
 
   add_index "users", ["customer_account_id"], name: "index_users_on_customer_account_id", using: :btree
@@ -236,5 +299,18 @@ ActiveRecord::Schema.define(version: 20140730055146) do
   add_index "users", ["partner_id"], name: "index_users_on_partner_id", using: :btree
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
   add_index "users", ["uuid"], name: "index_users_on_uuid", unique: true, using: :btree
+
+  create_table "withdrawals", force: true do |t|
+    t.decimal  "amount",              precision: 20, scale: 10
+    t.integer  "user_id"
+    t.integer  "withdrawal_entry_id"
+    t.string   "transaction_id"
+    t.text     "paypal_response"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "withdrawals", ["transaction_id"], name: "index_withdrawals_on_transaction_id", using: :btree
+  add_index "withdrawals", ["withdrawal_entry_id"], name: "index_withdrawals_on_withdrawal_entry_id", using: :btree
 
 end
