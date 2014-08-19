@@ -34,8 +34,8 @@ module Accounting
       credit_account = Plutus::Account.find_by_name Accounts::CASH
 
       {
-        debit_amounts: Plutus::DebitAmount.new(account: debit_account, amount: @withdrawal.amount, entry: @entry)
-        credit_amounts: Plutus::CreditAmount.new(account: credit_account, amount: @withdrawal.amount, entry: @entry)
+        debit_amounts: [Plutus::DebitAmount.new(account: debit_account, amount: @withdrawal.amount, entry: @entry)],
+        credit_amounts: [Plutus::CreditAmount.new(account: credit_account, amount: @withdrawal.amount, entry: @entry)]
       }
     end
   end

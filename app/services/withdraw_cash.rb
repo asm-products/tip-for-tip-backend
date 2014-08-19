@@ -17,7 +17,7 @@ class WithdrawCash
 
   # Public. Execute the withdrawal. If an amount option is not provided, the
   # amount is inferred by withdrawing the user account balance, but limited to
-  # the MAXUMUM_AMOUNT_ALLOWED if the balance exceeds this amount.
+  # the MAXIMUM_AMOUNT_ALLOWED if the balance exceeds this amount.
   #
   # Options:
   #   amount - Float. The amount of cash to withdraw in dollars and cents.
@@ -35,7 +35,7 @@ class WithdrawCash
   #
   def call(user, options={})
     options.symbolize_keys!
-    amount = options.delete(:amount) || [user.customer_account.balance, MAXUMUM_AMOUNT_ALLOWED].min
+    amount = options.delete(:amount) || [user.customer_account.balance, MAXIMUM_AMOUNT_ALLOWED].min
 
     if amount > MAXIMUM_AMOUNT_ALLOWED
       raise ArgumentError, "The amount may not be more than the maxiumum withdrawal amount allowed of #{MAXIMUM_AMOUNT_ALLOWED}"
@@ -49,26 +49,30 @@ class WithdrawCash
       raise ArgumentError, "The amount may not be more than the user account balance."
     end
 
+    withdrawal = nil
     Withdrawal.transaction do
       payment = make_payment!(user, amount)
+
+      # TODO? Raise error if payment.paymentInfoList has more than one item?
 
       # Create a withdrawal instance.
       withdrawal = Withdrawal.create! user: user,
         amount: amount,
-        transaction_id: payment.paymentInfoList.senderTransactionId,
+        transaction_id: payment.paymentInfoList.paymentInfo.first.senderTransactionId,
         paypal_response: payment.to_hash
 
       # Create a withdrawal accounting entry.
-      entry = WithdrawalEntryCreator.new.(withdrawal)
+      entry = Accounting::WithdrawalEntryCreator.new.(withdrawal)
     end
+
+    withdrawal
   end
 
   private def make_payment!(user, amount)
     receiver_email = user.paypal_email
     receiver_email = user.email if receiver_email.blank?
 
-    api = PayPal::SDK::AdaptivePayments::API.new
-    request = api.build_pay actionType: "PAY",
+    request = paypal_api.build_pay actionType: "PAY",
       # cancelUrl is URL to redirect the sender's browser to after canceling the approval
       # for a payment; it is always required but only used for payments that require approval
       # (explicit payments) which is the case with this request.
@@ -87,18 +91,17 @@ class WithdrawCash
         }] },
       sender: { useCredentials: true }
 
-    response = api.pay(request)
-
-
-    puts '------------'
-    puts response.class.name
-    p response
-    puts '------------'
-
+    response = paypal_api.pay(request)
 
     unless response.success?
       raise Errors::PaypalPayment, response.error
     end
+
+    response
+  end
+
+  private def paypal_api
+    @api ||= PayPal::SDK::AdaptivePayments::API.new
   end
 end
 

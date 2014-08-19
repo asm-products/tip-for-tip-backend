@@ -7,7 +7,7 @@ module Accounting
     subject { PurchaseEntryCreator.new.call(purchase) }
 
     it 'raises ArgumentError if no purchase is provided' do
-      expect{ ItunesPurchaseCreator.new.call(nil) }.to raise_error(ArgumentError)
+      expect{ PurchaseEntryCreator.new.call(nil) }.to raise_error(ArgumentError)
     end
 
     context 'when the purchase doesn\'t yet have a purchase entry' do

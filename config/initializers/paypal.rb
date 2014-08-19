@@ -7,3 +7,5 @@ PayPal::SDK.configure(
   password:  Rails.application.secrets.paypal['password'],
   signature: Rails.application.secrets.paypal['signature']
 )
+
+PayPal::SDK::Core::Logging.logger = Rails.logger

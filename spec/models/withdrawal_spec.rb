@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Withdrawal do
-  subject{ FactoryGirl.build :Withdrawal }
+  subject{ FactoryGirl.build :withdrawal }
   before { Accounts::seed }
 
   it('has a valid factory') { expect(subject).to be_valid }
