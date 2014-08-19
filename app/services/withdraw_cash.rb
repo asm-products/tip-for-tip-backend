@@ -94,7 +94,7 @@ class WithdrawCash
     response = paypal_api.pay(request)
 
     unless response.success?
-      raise Errors::PaypalPayment, response.error
+      raise Errors::PaypalPayment.new(response.error, request)
     end
 
     response
