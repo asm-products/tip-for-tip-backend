@@ -16,36 +16,7 @@ describe WithdrawCash do
 
   let(:account_balance) { 50 }
   let(:withdrawal_amount) { 33.55 }
-  let(:paypal_response) do
-    PayPal::SDK::AdaptivePayments::DataTypes::PayResponse.new responseEnvelope: {
-        timestamp: 10.seconds.ago,
-        ack: "Success",
-        correlationId: SecureRandom.hex(3),
-      },
-      payKey: SecureRandom.hex(3),
-      success?: true,
-      paymentExecStatus: "COMPLETED",
-      paymentInfoList: {
-        paymentInfo: [
-          {
-            pendingRefund: false,
-            receiver: {
-              accountId: SecureRandom.hex(3),
-              amount: withdrawal_amount,
-              email: user.email,
-              primary: false
-            },
-            senderTransactionId: SecureRandom.hex(3),
-            senderTransactionStatus: "COMPLETED",
-            transactionId: SecureRandom.hex(3),
-            transactionStatus: "COMPLETED"
-          }
-        ]
-      },
-      sender: {
-        accountId: SecureRandom.hex(3)
-      }
-  end
+  let(:paypal_response) { Support::Paypal::AdaptivePayments::Pay.successful_response(user.email, withdrawal_amount) }
 
   it 'defaults the amount to the amount of cash the user has in their account' do
     allow(user.customer_account).to receive(:balance).and_return withdrawal_amount
@@ -76,12 +47,22 @@ describe WithdrawCash do
 
   context 'when the user has a lower balance than the allowed minimum' do
     let(:account_balance) { 9 }
-    it { expect{ subject }.to raise_error ArgumentError }
+    it { expect{ subject }.to raise_error Errors::WithdrawalError }
   end
 
   context 'if an amount is specified' do
     let(:amount) { 17.44 }
     subject { instance.(user, amount: amount) }
+
+    context 'if the amount is a string' do
+      let(:amount) { "17.44" }
+      it 'converts it to a float correctly' do
+        expect(paypal_api).to receive(:pay) { |request|
+          expect(request.receiverList.receiver.first.amount).to eq amount.to_f
+        }.and_return(paypal_response)
+        subject
+      end
+    end
 
     it 'sets the amount to the receiver' do
       expect(paypal_api).to receive(:pay) { |request|
@@ -92,7 +73,7 @@ describe WithdrawCash do
 
     context 'that is larger than the account balance' do
       let(:amount) { account_balance + 1 }
-      it { expect{ subject }.to raise_error ArgumentError }
+      it { expect{ subject }.to raise_error Errors::WithdrawalError }
     end
 
     it 'sets the WithdrawalEntry amounts to the correct value' do
@@ -133,21 +114,7 @@ describe WithdrawCash do
     end
 
     context 'if unsuccessful' do
-      let(:paypal_response) do
-        PayPal::SDK::AdaptivePayments::DataTypes::PayResponse.new responseEnvelope: {
-            timestamp: 10.seconds.ago,
-            ack: "Failure",
-            correlationId: SecureRandom.hex(3),
-          },
-          error: [{
-            errorId:   580001,
-            domain:    "PLATFORM",
-            subdomain: "Application",
-            severity:  "Error",
-            category:  "Application",
-            message:   "Invalid request: More than one field cannot be used to specify a sender"
-          }]
-      end
+      let(:paypal_response) { Support::Paypal::AdaptivePayments::Pay.unsuccessful_response }
       it { expect{ subject }.to raise_error Errors::PaypalPayment }
     end
 

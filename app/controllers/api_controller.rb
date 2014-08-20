@@ -34,4 +34,9 @@ class ApiController < ApplicationController
     render status: 500, json: { error: :server_error, message: "Unexpected server error" }
   end
 
+  def bad_request e
+    logger.error "Bad request, responding with 400: \n#{e.message}"
+    render status: 400, json: { error: :bad_request, message: e.message }
+  end
+
 end

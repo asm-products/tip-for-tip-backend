@@ -27,26 +27,27 @@ class WithdrawCash
   #      amount that can be withdrawn.
   #
   # Raises:
-  #   ArgumentError - if the specified amount is more than the user account balance.
-  #   ArgumentError - if the specified amount is more than the user has in their
-  #                   cash account balance.
-  #   ArgumentError - if the specified amount is more than the maximum amount allowed.
-  #   Errors::PaypalPayment - if the payment attempt raises an error on the Paypal api
+  #   Errors::WithdrawalError - if the specified amount is more than the user account balance.
+  #   Errors::WithdrawalError - if the specified amount is more than the user has in their
+  #                             cash account balance.
+  #   Errors::WithdrawalError - if the specified amount is more than the maximum amount allowed.
+  #   Errors::PaypalPayment   - if the payment attempt raises an error on the Paypal api
   #
   def call(user, options={})
     options.symbolize_keys!
-    amount = options.delete(:amount) || [user.customer_account.balance, MAXIMUM_AMOUNT_ALLOWED].min
+    amount = options.delete(:amount).to_f
+    amount = [user.customer_account.balance, MAXIMUM_AMOUNT_ALLOWED].min if amount <= 0
 
     if amount > MAXIMUM_AMOUNT_ALLOWED
-      raise ArgumentError, "The amount may not be more than the maxiumum withdrawal amount allowed of #{MAXIMUM_AMOUNT_ALLOWED}"
+      raise Errors::WithdrawalError, "The amount may not be more than the maxiumum withdrawal amount allowed of #{MAXIMUM_AMOUNT_ALLOWED}"
     end
 
     if amount < MINUMUM_BALANCE_REQUIRED
-      raise ArgumentError, "The amount must be more than minumum withdrawal amount allowed of #{MINUMUM_BALANCE_REQUIRED}"
+      raise Errors::WithdrawalError, "The amount must be more than minumum withdrawal amount allowed of #{MINUMUM_BALANCE_REQUIRED}"
     end
 
     if amount > user.customer_account.balance
-      raise ArgumentError, "The amount may not be more than the user account balance."
+      raise Errors::WithdrawalError, "The amount may not be more than the user account balance."
     end
 
     withdrawal = nil
@@ -77,7 +78,7 @@ class WithdrawCash
       # for a payment; it is always required but only used for payments that require approval
       # (explicit payments) which is the case with this request.
       cancelUrl:    "https://tipfortip.com/paypal/pay",
-      # URL to redirect the sender's browser to after the sender has logged into PayPal and
+      # URL to redirect the sender's browser to after the sender has logged into Paypal and
       # approved a payment; it is always required but only used if a payment requires explicit
       # approval which is the case with this request
       returnUrl: "https://tipfortip.com/paypal/pay",

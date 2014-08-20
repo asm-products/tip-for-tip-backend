@@ -15,6 +15,8 @@ Rails.application.routes.draw do
     get '/account/purchases', to: 'account#purchases'
     get '/account/sales', to: 'account#sales'
 
+    post '/account/withdrawals', to: 'withdrawals#create'
+
     namespace :nouns do
       get '/places/foursquare/:foursquare_id', to: 'places#foursquare_show', as: :foursquare_place
       get '/places/:place_id', to: 'places#show', as: :place

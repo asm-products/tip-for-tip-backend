@@ -141,6 +141,37 @@ for a sale are the purchase instance's identifiers.
                 }
             ]
 
+## POST /account/withdrawals
+Create a withdrawal of cash. Creates a withdrawal instance and sends a paypal payment
+to the user's `paypal_email` or `email`. Withdrawal amounts must be within a permissible
+boundary of $10 - $100. It is essential to protect against unexpected error responses
+from Paypal, which will respond as 503 Service Unavailable errors.
+
++ Response 201
+
+    + Body
+            [
+                {
+                    "id": 1,
+                    "transaction_id": "7a0cdbf470f1e0700",
+                    "amount": 50.00
+                    "updated_at": "2014-06-13T00:00:26.000-07:00",
+                    "created_at": "2014-06-13T00:00:26.000-07:00"
+                }
+            ]
+
++ Response 400
+
+    If the amount requested for withdrawal is not within bounds or is more than the user
+    has in their account balance.
+
++ Response 503
+
+    If the Paypal payment fails for any reason. The response body will provide information
+    about why, and the API development team will be made aware of the issue. These error
+    responses should not be expected, but may occur in situations outside of our control,
+    such as unexpected failures in connection with the Paypal APIs.
+
 # Group Tips
 
 ## GET /tips/{tip_id}
